@@ -1,0 +1,30 @@
+# @@name@@
+A CFML wrapper for the @@apiReference@@.  
+@@description@@
+
+*Feel free to use the issue tracker to report bugs or suggest improvements!*
+
+### Acknowledgements
+
+If you need to acknowledge the work of any other developers, do it here.
+
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [`@@name@@` Reference Manual](#reference-manual)
+
+## Quick Start
+The following is a minimal example of doing something helpful.
+
+```cfc
+@@cfcName@@ = new @@cfcName@@( apiKey = 'xxx' );
+
+@@cfcName@@.doSomething( argument );
+```
+
+## Reference Manual
+
+#### `doSomething( required type argument )`
+Briefly explain what it does.
+
+---

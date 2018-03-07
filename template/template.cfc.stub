@@ -1,0 +1,165 @@
+/**
+* @@name@@
+* Copyright @@copyrightYear@@ @@author@@, Matthew Clemente, John Berquist
+* Licensed under MIT (https://mit-license.org)
+*/
+component output="false" displayname="@@name@@"  {
+
+  public any function init(
+    required string apiKey,
+    string baseUrl = "@@apiEndpointUrl@@",
+    numeric httpTimeout = 60,
+    boolean includeRaw = true ) {
+
+    structAppend( variables, arguments );
+
+    return this;
+  }
+
+  //API METHODS HERE
+
+
+  // PRIVATE FUNCTIONS
+  private struct function apiCall(
+    required string httpMethod,
+    required string path,
+    struct queryParams = { },
+    any body = '',
+    struct headers = { } )  {
+
+    var fullApiPath = variables.baseUrl & path;
+    var requestHeaders = getBaseHttpHeaders();
+    requestHeaders.append( headers, true );
+
+    var requestStart = getTickCount();
+    var apiResponse = makeHttpRequest( httpMethod = httpMethod, path = fullApiPath, queryParams = queryParams, headers = requestHeaders, body = body );
+
+    var result = {
+      'responseTime' = getTickCount() - requestStart,
+      'statusCode' = listFirst( apiResponse.statuscode, " " ),
+      'statusText' = listRest( apiResponse.statuscode, " " )
+    };
+
+    var deserializedFileContent = {};
+
+    if ( isJson( apiResponse.fileContent ) )
+      deserializedFileContent = deserializeJSON( apiResponse.fileContent );
+
+    //needs to be cusomtized by API integration for how errors are returned
+    if ( result.statusCode >= 400 ) {
+      if ( isStruct( deserializedFileContent ) )
+        result.append( deserializedFileContent );
+    }
+
+    //stored in data, because some responses are arrays and others are structs
+    result[ 'data' ] = deserializedFileContent;
+
+    if ( variables.includeRaw ) {
+      result[ 'raw' ] = {
+        'method' : ucase( httpMethod ),
+        'path' : fullApiPath,
+        'params' : serializeJSON( queryParams ),
+        'response' : apiResponse.fileContent,
+        'responseHeaders' : apiResponse.responseheader
+      };
+    }
+
+    return result;
+  }
+
+  private struct function getBaseHttpHeaders() {
+    return {
+      'Content-Type' : 'application/json',
+      'User-Agent' : '@@name@@',
+      'Authorization' : 'Bearer #variables.apiKey#'
+    };
+  }
+
+  private any function makeHttpRequest(
+    required string httpMethod,
+    required string path,
+    struct queryParams = { },
+    struct headers = { },
+    any body = ''
+  ) {
+    var result = '';
+
+    var fullPath = path & ( !queryParams.isEmpty()
+      ? ( '?' & parseQueryParams( queryParams, false ) )
+      : '' );
+
+    var requestHeaders = parseHeaders( headers );
+    var requestBody = parseBody( body );
+
+    cfhttp( url = fullPath, method = httpMethod, result = 'result' ) {
+
+      for ( var header in requestHeaders ) {
+        cfhttpparam( type = "header", name = header.name, value = header.value );
+      }
+
+      if ( arrayFindNoCase( [ 'POST','PUT','PATCH','DELETE' ], httpMethod ) && isJSON( requestBody ) )
+        cfhttpparam( type = "body", value = requestBody );
+
+    }
+    return result;
+  }
+
+  /**
+  * @hint convert the headers from a struct to an array
+  */
+  private array function parseHeaders( required struct headers ) {
+    var sortedKeyArray = headers.keyArray();
+    sortedKeyArray.sort( 'textnocase' );
+    var processedHeaders = sortedKeyArray.map(
+      function( key ) {
+        return { name: key, value: trim( headers[ key ] ) };
+      }
+    );
+    return processedHeaders;
+  }
+
+  /**
+  * @hint converts the queryparam struct to a string, with optional encoding and the possibility for empty values being pass through as well
+  */
+  private string function parseQueryParams( required struct queryParams, boolean encodeQueryParams = true, boolean includeEmptyValues = true ) {
+    var sortedKeyArray = queryParams.keyArray();
+    sortedKeyArray.sort( 'text' );
+
+    var queryString = sortedKeyArray.reduce(
+      function( queryString, queryParamKey ) {
+        var encodedKey = encodeQueryParams
+          ? encodeUrl( queryParamKey )
+          : queryParamKey;
+        if ( !isArray( queryParams[ queryParamKey ] ) ) {
+          var encodedValue = encodeQueryParams && len( queryParams[ queryParamKey ] )
+            ? encodeUrl( queryParams[ queryParamKey ] )
+            : queryParams[ queryParamKey ];
+        } else {
+          var encodedValue = encodeQueryParams && ArrayLen( queryParams[ queryParamKey ] )
+            ?  encodeUrl( serializeJSON( queryParams[ queryParamKey ] ) )
+            : queryParams[ queryParamKey ].toList();
+          }
+        return queryString.listAppend( encodedKey & ( includeEmptyValues || len( encodedValue ) ? ( '=' & encodedValue ) : '' ), '&' );
+      }, ''
+    );
+
+    return queryString.len() ? queryString : '';
+  }
+
+  private string function parseBody( required any body ) {
+    if ( isStruct( body ) || isArray( body ) )
+      return serializeJson( body );
+    else if ( isJson( body ) )
+      return body;
+    else
+      return '';
+  }
+
+  private string function encodeUrl( required string str, boolean encodeSlash = true ) {
+    var result = replacelist( urlEncodedFormat( str, 'utf-8' ), '%2D,%2E,%5F,%7E', '-,.,_,~' );
+    if ( !encodeSlash ) result = replace( result, '%2F', '/', 'all' );
+
+    return result;
+  }
+
+}

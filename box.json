@@ -1,0 +1,56 @@
+{
+    "name":"API Wrapper Template",
+    "version":"0.0.6",
+    "author":"Matthew J. Clemente <mjclemente@gmail.com>",
+    "location":"mjclemente/api-wrapper-template#v0.0.6",
+    "homepage":"https://github.com/mjclemente/api-wrapper-template",
+    "documentation":"",
+    "repository":{
+        "type":"",
+        "URL":""
+    },
+    "bugs":"",
+    "slug":"api-wrapper-template",
+    "shortDescription":"A template for building API clients in CFML",
+    "description":"",
+    "instructions":"",
+    "changelog":"",
+    "type":"commandbox-modules",
+    "keywords":"api, template, commandbox",
+    "private":false,
+    "projectURL":"",
+    "license":[
+        {
+            "type":"",
+            "URL":""
+        }
+    ],
+    "contributors":[],
+    "dependencies":{},
+    "devDependencies":{},
+    "installPaths":{},
+    "scripts":{},
+    "ignore":[
+        "**/.*",
+        "test",
+        "tests"
+    ],
+    "testbox":{
+        "runner":[
+            {
+                "default":""
+            }
+        ],
+        "labels":"",
+        "reporter":"",
+        "bundles":"",
+        "recurse":true,
+        "directory":"tests.specs",
+        "testBundles":"",
+        "testSuites":"",
+        "testSpecs":"",
+        "verbose":true,
+        "watchDelay":500,
+        "watchPaths":"**.cfc"
+    }
+}

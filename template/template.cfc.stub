@@ -1,6 +1,6 @@
 /**
 * @@name@@
-* Copyright @@copyrightYear@@ @@author@@, Matthew Clemente, John Berquist
+* Copyright @@copyrightYear@@ @@copyright@@
 * Licensed under MIT (https://mit-license.org)
 */
 component output="false" displayname="@@name@@"  {

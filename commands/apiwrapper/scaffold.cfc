@@ -101,6 +101,7 @@ component {
       'apiEndpointUrl' : apiEndpointUrl,
       'description' : description,
       'cfcName' : toProperFileName( apiName ),
+      'copyright' : ( author.len() ? '#author#,' : '' ) & ' Matthew J. Clemente, John Berquist',
       'copyrightYear' : now().year(),
       'apiReference' : apiDocUrl.len() ? '[#apiName# API](#apiDocUrl#)' : '#apiName# API'
     }

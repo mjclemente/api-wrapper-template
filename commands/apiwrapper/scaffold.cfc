@@ -80,6 +80,7 @@ component {
     for ( var arg in arguments ) {
       print.magentaLine( '- Set #arg# = #arguments[ arg ]#' );
     }
+    print.line();
 
     //let's print some warnings, if the data doesn't look right
     if ( !isValid( 'url', apiEndpointUrl ) )

@@ -16,8 +16,45 @@ component output="false" displayname="@@name@@"  {
     return this;
   }
 
-  //API METHODS HERE
+  /**
+  * Add your first resource here
+  * And consider including a link to the docs
+  */
 
+  /**
+  * @hint Create a resource
+  */
+  // public struct function createRESOURCE( required any RESOURCE ) {
+  //   return apiCall( 'POST', '/RESOURCE', {}, {} );
+  // }
+
+  /**
+  * @hint List resources
+  */
+  // public struct function listRESOURCES() {
+  //   return apiCall( 'GET', "/RESOURCE" );
+  // }
+
+  /**
+  * @hint Retrieve a single resource by ID.
+  */
+  // public struct function getRESOURCE( required numeric id ) {
+  //   return apiCall( 'GET', "/RESOURCE/#id#" );
+  // }
+
+  /**
+  * @hint Delete a single resource by ID.
+  */
+  // public struct function deleteRESOURCE( required numeric id ) {
+  //   return apiCall( 'DELETE', "/RESOURCE/#id#" );
+  // }
+
+  /**
+  * @hint Update a resource by ID.
+  */
+  // public struct function updateRESOURCE( required numeric id, required any RESOURCE ) {
+  //   return apiCall( 'PATCH', '/RESOURCE/#id#', {}, {} );
+  // }
 
   // PRIVATE FUNCTIONS
   private struct function apiCall(

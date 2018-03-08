@@ -28,7 +28,7 @@ component {
     string apiName = "",
     string apiEndpointUrl = "",
     string apiDocUrl = '',
-    string name,
+    string name = '',
     string description = '',
     string author,
     boolean wizard = false ) {
@@ -74,7 +74,7 @@ component {
 
     }
 
-    name = name ?: apiName.lcase() & 'cfc';
+    name = name.trim().len() ? name : apiName.lcase() & 'cfc';
     author = author ?: moduleSettings.author;
 
     for ( var arg in arguments ) {

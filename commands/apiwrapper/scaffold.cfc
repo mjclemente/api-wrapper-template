@@ -106,13 +106,20 @@ component {
       'apiReference' : apiDocUrl.len() ? '[#apiName# API](#apiDocUrl#)' : '#apiName# API'
     }
 
-    var directory = fileSystemUtil.resolvePath( substitutions.cfcName );
+    var projectDirectory = fileSystemUtil.resolvePath( '#substitutions.cfcName#Wrapper' );
+    var wrapperDirectory = projectDirectory & '/#substitutions.cfcName#';
 
     print.line().boldCyanLine( "Copying template over...." ).toConsole();
 
-    if ( !directoryExists( directory ) ) {
-      directoryCreate( directory );
-    }
+    if ( !directoryExists( projectDirectory ) )
+      directoryCreate( projectDirectory );
+    if ( !directoryExists( wrapperDirectory ) )
+      directoryCreate( wrapperDirectory );
+
+    fileWrite( projectDirectory & "/index.cfm", '' );
+
+    var serverJson = fileRead( templatePath & "server.json.stub" );
+    fileWrite( projectDirectory & "/server.json", serverJson );
 
     var readme = fileRead( templatePath & "README.md.stub" );
     substitutions.each( 
@@ -120,7 +127,7 @@ component {
         readme = readme.replaceNoCase( '@@#key#@@', value, 'all' );
       }
     );
-    fileWrite( directory & "/README.md", readme );
+    fileWrite( wrapperDirectory & "/README.md", readme );
 
     var license = fileRead( templatePath & "LICENSE.stub" );
     substitutions.each( 
@@ -128,7 +135,7 @@ component {
         license = license.replaceNoCase( '@@#key#@@', value, 'all' );
       }
     );
-    fileWrite( directory & "/LICENSE", license );
+    fileWrite( wrapperDirectory & "/LICENSE", license );
 
     var template  = fileRead( templatePath & "template.cfc.stub" );
     substitutions.each( 
@@ -136,7 +143,7 @@ component {
         template = template.replaceNoCase( '@@#key#@@', value, 'all' );
       }
     );
-    fileWrite( directory & "/#substitutions.cfcname#.cfc", template );
+    fileWrite( wrapperDirectory & "/#substitutions.cfcname#.cfc", template );
 
     print.line()
       .greenLine( "Success! Your API wrapper is scaffolded!" )

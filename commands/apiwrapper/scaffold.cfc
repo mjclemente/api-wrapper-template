@@ -11,116 +11,137 @@
 */
 component {
 
-    property name="moduleSettings" inject="commandbox:moduleSettings:api-wrapper-template";
-    property name="system" inject="system@constants";
+  property name="moduleSettings" inject="commandbox:moduleSettings:api-wrapper-template";
+  property name="system" inject="system@constants";
 
-    variables.templatePath = "/api-wrapper-template/template/";
+  variables.templatePath = "/api-wrapper-template/template/";
 
-    /**
-    * @apiName Name of the API this library will wrap. [i.e. Stripe]
-    * @apiEndpointUrl Base endpoint URL for API calls. [i.e. https://api.stripe.com/v1]
-    * @apiDocUrl URL of the API documentation homepage
-    * @name Name for the wrapper [i.e. StripeCFC]
-    * @description A short description of the wrapper.
-    * @author Name of the author of the wrapper.
-    */
-    function run(
-      string apiName = "",
-      string apiEndpointUrl = "",
-      string apiDocUrl = '',
-      string name,
-      string description = '',
-      string author,
-      boolean wizard = false
-    ) {
-        if ( wizard ) {
-          command( 'apiwrapper scaffold-wizard' ).run();
-          return;
-        }
+  /**
+  * @apiName Name of the API this library will wrap. [i.e. Stripe]
+  * @apiEndpointUrl Base endpoint URL for API calls. [i.e. https://api.stripe.com/v1]
+  * @apiDocUrl URL of the API documentation homepage
+  * @name Name for the wrapper [i.e. StripeCFC]
+  * @description A short description of the wrapper.
+  * @author Name of the author of the wrapper.
+  */
+  function run (
+    string apiName = "",
+    string apiEndpointUrl = "",
+    string apiDocUrl = '',
+    string name,
+    string description = '',
+    string author,
+    boolean wizard = false ) {
+    
+    if ( wizard ) {
+      command( 'apiwrapper scaffold-wizard' ).run();
+      return;
+    }
 
-        if ( !apiName.trim().len() ) {
+    if ( !apiName.trim().len() ) {
 
-          print.boldRedLine( "In order to scaffold this wrapper, you need to provide the name of the API you're working with." )
-            .line()
-            .boldRedLine( "(Otherwise we really would know what we were scaffolding.)" )
-            .line();
+      print.line()
+        .boldRedLine( "In order to scaffold this wrapper, you need to provide the name of the API you're working with." )
+        .redLine( "(Otherwise we really would know what we were scaffolding.)" )
+        .line();
 
-          apiName = trim( ask( 'What is the name of the API this library will wrap. [i.e. Stripe]: ' ) );
+      apiName = trim( ask( 'What is the name of the API this library will wrap. [i.e. Stripe]: ' ) );
 
-          if ( !apiName.len() ) {
-            print.line( 'Ok, exiting. You can run the wizard, or provide the apiName argument when scaffolding your wrapper.' );
-            return;
-          } else {
-            print.boldGreenLine( "Thanks! On with the show! " )
-              .line();
-          }
-        }
+      if ( !apiName.len() ) {
+        print.line( 'Ok, exiting. You can run the wizard, or provide the apiName argument when scaffolding your wrapper.' );
+        return;
+      } else {
+        print.greenLine( "Thanks! On with the show! " )
+          .line();
+      }
+    }
 
-        if ( !apiEndpointUrl.trim().len() ) {
+    if ( !apiEndpointUrl.trim().len() ) {
 
-          print.boldRedLine( "In order to scaffold this wrapper, you need to provide the base endpoint URL for API calls." )
-            .line()
-            .boldRedLine( "(If you don't have it, go look it up right now. We need an endpoint to make our API calls.)" )
-            .line();
+      print.line()
+        .boldRedLine( "In order to scaffold this wrapper, you need to provide the base endpoint URL for API calls." )
+        .redLine( "(If you don't have it, go look it up right now. We need an endpoint to make our API calls.)" )
+        .line();
 
-          apiEndpointUrl = trim( ask( 'What is the base endpoint URL for API calls. [i.e. https://api.coolstuff.com/v1]: ' ) );
-          if( !apiEndpointUrl.len() ) {
-            print.line( 'Ok, exiting. You can run the wizard, or provide the apiEndpointUrl argument when scaffolding your wrapper.' );
-            return;
-          } else {
-            print.boldGreenLine( "Thanks! On with the show! " )
-              .line();
-          }
-
-        }
-
-        name = name ?: apiName.lcase() & 'cfc';
-        author = author ?: moduleSettings.author;
-
-        for ( var arg in arguments ) {
-          print.magentaLine( '- Set #arg# = #arguments[ arg ]#' );
-        }
-
-        //let's print some warnings, if the data doesn't look right
-        if ( !isValid( 'url', apiEndpointUrl ) )
-          print.yellowLine( "Warning: The apiEndpointUrl does not appear to be valid. This could cause issues." );
-        if ( !apiDocUrl.len() )
-          print.yellowLine( "Warning: You didn't include an apiDocUrl. Consider linking to the API documentation in the README." );
-        else if ( apiDocUrl.len() && !isValid( 'url', apiDocUrl ) )
-          print.yellowLine( "Warning: The apiDocUrl does not appear to be valid, which could result in some confusing documentation." );
-        if ( !description.len() )
-          print.yellowLine( "Warning: You didn't include a description. Considering adding an explanation of what your wrapper does in the README." );
-        if ( !author.len() )
-          print.yellowLine( "Warning: The author name is blank... don't you want credit for your work?" );
-
-        //let's create the extra variables that we need
-        var substitutions = {
-          'name' : name,
-          'apiEndpointUrl' : apiEndpointUrl,
-          'description' : description,
-          'cfcName' : toProperFileName( apiName ),
-          'copyrightYear' : now().year(),
-          'apiReference' : apiDocUrl.len() ? '[#apiName# API](#apiDocUrl#)' : '#apiName# API'
-        }
-
-        var directory = fileSystemUtil.resolvePath( substitutions.cfcName );
-
-        print.line().boldCyanLine( "Copying template over...." ).toConsole();
-
-        if ( !directoryExists( directory ) ) {
-          directoryCreate( directory );
-        }
-
-        var readme = fileRead( templatePath & "README.md.stub" );
-
-        substitutions.each( 
-          function( key, value ) {
-            readme = readme.replaceNoCase( '@@#key#@@', value, 'all' );
-          }
-        );
-        fileWrite( directory & "/README.md", readme );
+      apiEndpointUrl = trim( ask( 'What is the base endpoint URL for API calls. [i.e. https://api.coolstuff.com/v1]: ' ) );
+      if( !apiEndpointUrl.len() ) {
+        print.line( 'Ok, exiting. You can run the wizard, or provide the apiEndpointUrl argument when scaffolding your wrapper.' );
+        return;
+      } else {
+        print.greenLine( "Thanks! On with the show! " )
+          .line();
+      }
 
     }
+
+    name = name ?: apiName.lcase() & 'cfc';
+    author = author ?: moduleSettings.author;
+
+    for ( var arg in arguments ) {
+      print.magentaLine( '- Set #arg# = #arguments[ arg ]#' );
+    }
+
+    //let's print some warnings, if the data doesn't look right
+    if ( !isValid( 'url', apiEndpointUrl ) )
+      print.yellowLine( "Warning: The apiEndpointUrl does not appear to be valid. This could cause issues." );
+    if ( !apiDocUrl.len() )
+      print.yellowLine( "Warning: You didn't include an apiDocUrl. Consider linking to the API documentation in the README." );
+    else if ( apiDocUrl.len() && !isValid( 'url', apiDocUrl ) )
+      print.yellowLine( "Warning: The apiDocUrl does not appear to be valid, which could result in some confusing documentation." );
+    if ( !description.len() )
+      print.yellowLine( "Warning: You didn't include a description. Considering adding an explanation of what your wrapper does in the README." );
+    if ( !author.len() )
+      print.yellowLine( "Warning: The author name is blank... don't you want credit for your work?" );
+
+    //let's create the extra variables that we need
+    var substitutions = {
+      'name' : name,
+      'apiEndpointUrl' : apiEndpointUrl,
+      'description' : description,
+      'cfcName' : toProperFileName( apiName ),
+      'copyrightYear' : now().year(),
+      'apiReference' : apiDocUrl.len() ? '[#apiName# API](#apiDocUrl#)' : '#apiName# API'
+    }
+
+    var directory = fileSystemUtil.resolvePath( substitutions.cfcName );
+
+    print.line().boldCyanLine( "Copying template over...." ).toConsole();
+
+    if ( !directoryExists( directory ) ) {
+      directoryCreate( directory );
+    }
+
+    var readme = fileRead( templatePath & "README.md.stub" );
+    substitutions.each( 
+      function( key, value ) {
+        readme = readme.replaceNoCase( '@@#key#@@', value, 'all' );
+      }
+    );
+    fileWrite( directory & "/README.md", readme );
+
+    var license = fileRead( templatePath & "LICENSE.stub" );
+    substitutions.each( 
+      function( key, value ) {
+        license = license.replaceNoCase( '@@#key#@@', value, 'all' );
+      }
+    );
+    fileWrite( directory & "/LICENSE", license );
+
+    var template  = fileRead( templatePath & "template.cfc.stub" );
+    substitutions.each( 
+      function( key, value ) {
+        template = template.replaceNoCase( '@@#key#@@', value, 'all' );
+      }
+    );
+    fileWrite( directory & "/#substitutions.cfcname#.cfc", template );
+
+    print.line()
+      .greenLine( "Success! Your API wrapper is scaffolded!" )
+      .line()
+      .line( "Now it's time to CD into the directory and start developing!" )
+      .line()
+      .line();
+  }
 
 
   /**

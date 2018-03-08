@@ -63,7 +63,7 @@ component {
         .redLine( "(If you don't have it, go look it up right now. We need an endpoint to make our API calls.)" )
         .line();
 
-      apiEndpointUrl = trim( ask( 'What is the base endpoint URL for API calls. [i.e. https://api.coolstuff.com/v1]: ' ) );
+      apiEndpointUrl = trim( ask( 'What is the base endpoint URL for API calls. [i.e. https://api.stripe.com/v1]: ' ) );
       if( !apiEndpointUrl.len() ) {
         print.line( 'Ok, exiting. You can run the wizard, or provide the apiEndpointUrl argument when scaffolding your wrapper.' );
         return;

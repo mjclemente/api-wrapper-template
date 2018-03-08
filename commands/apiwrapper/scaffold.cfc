@@ -97,6 +97,7 @@ component {
     //let's create the extra variables that we need
     var substitutions = {
       'name' : name,
+      'author' : author,
       'apiEndpointUrl' : apiEndpointUrl,
       'description' : description,
       'cfcName' : toProperFileName( apiName ),

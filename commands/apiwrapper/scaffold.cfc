@@ -1,6 +1,12 @@
 /**
-* Create a new API Client
-* This command will create a folder for the API wrapper in the current directory.
+* Create a new API Client Wrapper
+* This command will create a folder in the current working directory and generate the basic files needed to begin developing a new API wrapper. 
+* 
+* Once installed, you can run the command using the --wizard parameter for a walkthrough of all options that can be configured
+* 
+* {code:bash}
+* apiwrapper scaffold --wizard
+* {code}
 *
 * You can set global defaults for author in the module settings.
 * Then you don't need to pass those parameters in to `apiwrapper scaffold`.

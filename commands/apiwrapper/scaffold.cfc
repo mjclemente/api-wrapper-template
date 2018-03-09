@@ -29,6 +29,8 @@ component {
   * @name Name for the wrapper [i.e. StripeCFC]
   * @description A short description of the wrapper.
   * @author Name of the author of the wrapper.
+  * @wizard Run the init wizard, defaults to false
+  * @quickStart After scaffolding, cd into project and start server [defaults to false]
   */
   function run (
     string apiName = "",

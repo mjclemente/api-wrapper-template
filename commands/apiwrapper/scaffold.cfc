@@ -39,7 +39,8 @@ component {
     string name = '',
     string description = '',
     string author,
-    boolean wizard = false ) {
+    boolean wizard = false,
+    boolean quickStart = false ) {
     
     if ( wizard ) {
       command( 'apiwrapper scaffold-wizard' ).run();
@@ -155,10 +156,21 @@ component {
 
     print.line()
       .greenLine( "Success! Your API wrapper is scaffolded!" )
-      .line()
-      .line( "Now it's time to CD into the directory and start developing!" )
-      .line()
       .line();
+
+    if ( quickStart ) {
+    
+      print.line( "Changing directory to project folder..." );
+      command( 'cd #projectDirectory#' ).run();
+
+      print.line( "Starting a server, so you can start developing right away!" );
+      command( 'server start' ).run();
+    
+    } else {
+      print.line( "Now it's time to CD into the directory and start developing!" );
+    }
+
+    print.line().line();
   }
 
 

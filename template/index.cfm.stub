@@ -1,0 +1,4 @@
+<cfscript>
+  // @@cfcName@@ = new @@cfcName@@.@@cfcName@@( apiKey = 'xxxxxxxxx' );
+  writeOutput( 'Uncomment your component and start configuring up your authentication credentials to get started!' );
+</cfscript>

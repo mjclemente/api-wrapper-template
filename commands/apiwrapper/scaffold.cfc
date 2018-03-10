@@ -125,10 +125,16 @@ component {
     if ( !directoryExists( wrapperDirectory ) )
       directoryCreate( wrapperDirectory );
 
-    fileWrite( projectDirectory & "/index.cfm", '' );
-
     var serverJson = fileRead( templatePath & "server.json.stub" );
     fileWrite( projectDirectory & "/server.json", serverJson );
+
+    var index = fileRead( templatePath & "index.cfm.stub" );
+    substitutions.each( 
+      function( key, value ) {
+        index = index.replaceNoCase( '@@#key#@@', value, 'all' );
+      }
+    );
+    fileWrite( projectDirectory & "/index.cfm", index );
 
     var readme = fileRead( templatePath & "README.md.stub" );
     substitutions.each( 

@@ -17,9 +17,9 @@ If you need to acknowledge the work of any other developers, do it here.
 The following is a minimal example of doing something helpful.
 
 ```cfc
-@@cfcName@@ = new @@cfcName@@.@@cfcName@@( apiKey = 'xxx' );
+@@apiNameSlug@@ = new @@apiNameSlug@@.@@apiNameSlug@@( apiKey = 'xxx' );
 
-@@cfcName@@.doSomething( argument );
+@@apiNameSlug@@.doSomething( argument );
 ```
 
 ## Reference Manual

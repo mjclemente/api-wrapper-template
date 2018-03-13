@@ -15,7 +15,7 @@ component output="false" displayname="@@name@@"  {
 
     //map sensitive args to env variables or java system props
     var secrets = {
-      'apiKey': '@@cleanName@@_API_KEY'
+      'apiKey': '@@apiNameSlug@@_API_KEY'
     };
 
     var system = createObject( 'java', 'java.lang.System' );

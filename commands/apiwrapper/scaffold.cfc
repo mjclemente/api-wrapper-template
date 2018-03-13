@@ -109,14 +109,14 @@ component {
       'author' : author,
       'apiEndpointUrl' : apiEndpointUrl,
       'description' : description,
-      'cfcName' : toProperFileName( apiName ),
+      'apiNameSlug' : toProperFileName( apiName ),
       'copyright' : ( author.len() ? '#author#,' : '' ) & ' Matthew J. Clemente, John Berquist',
       'copyrightYear' : now().year(),
       'apiReference' : apiDocUrl.len() ? '[#apiName# API](#apiDocUrl#)' : '#apiName# API'
     }
 
-    var projectDirectory = fileSystemUtil.resolvePath( '#substitutions.cfcName#Wrapper' );
-    var wrapperDirectory = projectDirectory & '/#substitutions.cfcName#';
+    var projectDirectory = fileSystemUtil.resolvePath( '#substitutions.apiNameSlug#Wrapper' );
+    var wrapperDirectory = projectDirectory & '/#substitutions.apiNameSlug#';
 
     print.line().boldCyanLine( "Copying template over...." ).toConsole();
 
@@ -158,7 +158,7 @@ component {
         template = template.replaceNoCase( '@@#key#@@', value, 'all' );
       }
     );
-    fileWrite( wrapperDirectory & "/#substitutions.cfcname#.cfc", template );
+    fileWrite( wrapperDirectory & "/#substitutions.apiNameSlug#.cfc", template );
 
     print.line()
       .greenLine( "Success! Your API wrapper is scaffolded!" )

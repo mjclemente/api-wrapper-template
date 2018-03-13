@@ -110,6 +110,7 @@ component {
       'apiEndpointUrl' : apiEndpointUrl,
       'description' : description,
       'apiNameSlug' : toProperFileName( apiName ),
+      'apiNameSlugUcase' : toProperFileName( apiName ).uCase(),
       'copyright' : ( author.len() ? '#author#,' : '' ) & ' Matthew J. Clemente, John Berquist',
       'copyrightYear' : now().year(),
       'apiReference' : apiDocUrl.len() ? '[#apiName# API](#apiDocUrl#)' : '#apiName# API'

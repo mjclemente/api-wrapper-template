@@ -226,6 +226,8 @@ component {
 
     // remove dashes at the beginning or end of the string
     str = str.ReReplace( '(^\-+)|(\-+$)', '', 'all' );
+    //remove dots at the beginning or end of the string
+    str = ReReplace(str, '(^\.+)|(\.+$)', '', 'all');
 
     return str;
   }

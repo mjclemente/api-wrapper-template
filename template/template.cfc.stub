@@ -159,12 +159,30 @@ component output="false" displayname="@@name@@"  {
 
     cfhttp( url = fullPath, method = httpMethod, result = 'result' ) {
 
+      if ( isJsonPayload( headers ) ) {
+
+        var requestPayload = parseBody( payload );
+        if ( isJSON( requestPayload ) )
+          cfhttpparam( type = "body", value = requestPayload );
+
+      } else if ( isFormPayload( headers ) ) {
+
+        headers.delete( 'Content-Type' ); //Content Type added automatically by cfhttppparam
+
+        for ( var param in payload ) {
+          if ( !variables.fileFields.contains( param ) )
+            cfhttpparam( type = 'formfield', name = param, value = payload[ param ] );
+          else
+            cfhttpparam( type = 'file', name = param, file = payload[ param ] );
+        }
+
+      }
+
+      //handled last, to account for possible Content-Type header correction for forms
+      var requestHeaders = parseHeaders( headers );
       for ( var header in requestHeaders ) {
         cfhttpparam( type = "header", name = header.name, value = header.value );
       }
-
-      if ( arrayFindNoCase( [ 'POST','PUT','PATCH','DELETE' ], httpMethod ) && isJSON( requestBody ) )
-        cfhttpparam( type = "body", value = requestBody );
 
     }
     return result;

@@ -38,6 +38,9 @@ component output="false" displayname="@@name@@"  {
       }
     }
 
+    //declare file fields to be handled via multipart/form-data **Important** this is not applicable if payload is application/json
+    variables.fileFields = [];
+
     return this;
   }
 

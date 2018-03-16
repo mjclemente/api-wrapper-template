@@ -86,7 +86,7 @@ component output="false" displayname="@@name@@"  {
     required string httpMethod,
     required string path,
     struct queryParams = { },
-    any body = '',
+    any payload = '',
     struct headers = { } )  {
 
     var fullApiPath = variables.baseUrl & path;
@@ -94,7 +94,7 @@ component output="false" displayname="@@name@@"  {
     requestHeaders.append( headers, true );
 
     var requestStart = getTickCount();
-    var apiResponse = makeHttpRequest( httpMethod = httpMethod, path = fullApiPath, queryParams = queryParams, headers = requestHeaders, body = body );
+    var apiResponse = makeHttpRequest( httpMethod = httpMethod, path = fullApiPath, queryParams = queryParams, headers = requestHeaders, payload = payload );
 
     var result = {
       'responseTime' = getTickCount() - requestStart,
@@ -142,7 +142,7 @@ component output="false" displayname="@@name@@"  {
     required string path,
     struct queryParams = { },
     struct headers = { },
-    any body = ''
+    any payload = ''
   ) {
     var result = '';
 

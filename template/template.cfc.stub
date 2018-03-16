@@ -131,6 +131,7 @@ component output="false" displayname="@@name@@"  {
 
   private struct function getBaseHttpHeaders() {
     return {
+      'Accept' : 'application/json',
       'Content-Type' : 'application/json',
       'User-Agent' : '@@name@@',
       'Authorization' : 'Bearer #variables.apiKey#'

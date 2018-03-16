@@ -225,4 +225,18 @@ component output="false" displayname="@@name@@"  {
     return result;
   }
 
+  /**
+  * @hint helper to determine if body should be sent as JSON
+  */
+  private boolean function isJsonPayload( required struct headers ) {
+    return headers[ 'Content-Type' ] == 'application/json';
+  }
+
+  /**
+  * @hint helper to determine if body should be sent as form params
+  */
+  private boolean function isFormPayload( required struct headers ) {
+    return arrayContains( [ 'application/x-www-form-urlencoded', 'multipart/form-data' ], headers[ 'Content-Type' ] );
+  }
+
 }

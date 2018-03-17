@@ -155,7 +155,7 @@ component output="false" displayname="@@name@@"  {
       : '' );
 
     var requestHeaders = parseHeaders( headers );
-    var requestBody = parseBody( body );
+    var requestBody = parseBody( payload );
 
     cfhttp( url = fullPath, method = httpMethod, result = 'result' ) {
 

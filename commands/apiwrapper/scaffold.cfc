@@ -86,11 +86,6 @@ component {
     name = name.trim().len() ? name : apiName.lcase() & 'cfc';
     author = author ?: moduleSettings.author;
 
-    for ( var arg in arguments ) {
-      print.magentaLine( '- Set #arg# = #arguments[ arg ]#' );
-    }
-    print.line();
-
     //let's print some warnings, if the data doesn't look right
     if ( !isValid( 'url', apiEndpointUrl ) )
       print.yellowLine( "Warning: The apiEndpointUrl does not appear to be valid. This could cause issues." );

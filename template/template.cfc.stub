@@ -81,7 +81,7 @@ component output="false" displayname="@@name@@"  {
   * @hint Update a resource by ID.
   */
   // public struct function updateRESOURCE( required numeric id, required any RESOURCE ) {
-  //   return apiCall( 'PATCH', '/RESOURCE/#id#', {}, {} );
+  //   return apiCall( 'PUT', '/RESOURCE/#id#', {}, {} );
   // }
 
   // PRIVATE FUNCTIONS

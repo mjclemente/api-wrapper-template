@@ -260,4 +260,61 @@ component output="false" displayname="@@name@@"  {
     return arrayContains( [ 'application/x-www-form-urlencoded', 'multipart/form-data' ], headers[ 'Content-Type' ] );
   }
 
+  /**
+  *
+  * Based on an (old) blog post and UDF from Raymond Camden
+  * https://www.raymondcamden.com/2012/01/04/Converting-XML-to-JSON-My-exploration-into-madness/
+  *
+  */
+  private struct function xmlToStruct( required any x ) {
+
+    if ( isSimpleValue( x ) && isXml( x ) )
+      x = xmlParse( x );
+
+    var s = {};
+
+    if ( xmlGetNodeType( x ) == "DOCUMENT_NODE" ) {
+      s[ structKeyList( x ) ] = xmlToStruct( x[ structKeyList( x ) ] );
+    }
+
+    if ( structKeyExists( x, "xmlAttributes" ) && !structIsEmpty( x.xmlAttributes ) ) {
+      s.attributes = {};
+      for ( var item in x.xmlAttributes ) {
+        s.attributes[ item ] = x.xmlAttributes[ item ];
+      }
+    }
+
+    if ( structKeyExists( x, 'xmlText' ) && x.xmlText.trim().len() )
+      s.value = x.xmlText;
+
+    if ( structKeyExists( x, "xmlChildren" ) ) {
+
+      for ( var xmlChild in x.xmlChildren ) {
+        if ( structKeyExists( s, xmlChild.xmlname ) ) {
+
+          if ( !isArray( s[ xmlChild.xmlname ] ) ) {
+            var temp = s[ xmlChild.xmlname ];
+            s[ xmlChild.xmlname ] = [ temp ];
+          }
+
+          arrayAppend( s[ xmlChild.xmlname ], xmlToStruct( xmlChild ) );
+
+        } else {
+
+          if ( structKeyExists( xmlChild, "xmlChildren" ) && arrayLen( xmlChild.xmlChildren ) ) {
+              s[ xmlChild.xmlName ] = xmlToStruct( xmlChild );
+           } else if ( structKeyExists( xmlChild, "xmlAttributes" ) && !structIsEmpty( xmlChild.xmlAttributes ) ) {
+            s[ xmlChild.xmlName ] = xmlToStruct( xmlChild );
+          } else {
+            s[ xmlChild.xmlName ] = xmlChild.xmlText;
+          }
+
+        }
+
+      }
+    }
+
+    return s;
+  }
+
 }

@@ -105,19 +105,24 @@ component output="false" displayname="@@name@@"  {
       'statusText' = listRest( apiResponse.statuscode, " " )
     };
 
-    var deserializedFileContent = {};
+    var parsedFileContent = {};
 
-    if ( isJson( apiResponse.fileContent ) )
-      deserializedFileContent = deserializeJSON( apiResponse.fileContent );
+    // Handle response based on mimetype
+    var mimeType = apiResponse.mimetype ?: requestHeaders[ 'Content-Type' ];
 
-    //needs to be cusomtized by API integration for how errors are returned
-    if ( result.statusCode >= 400 ) {
-      if ( isStruct( deserializedFileContent ) )
-        result.append( deserializedFileContent );
+    if ( mimeType == 'application/json' && isJson( apiResponse.fileContent ) ) {
+      parsedFileContent = deserializeJSON( apiResponse.fileContent );
+    } else if ( mimeType.listLast( '/' ) == 'xml' && isXml( apiResponse.fileContent ) ) {
+      parsedFileContent = xmlToStruct( apiResponse.fileContent );
+    } else {
+      parsedFileContent = apiResponse.fileContent;
     }
 
+    //can be customized by API integration for how errors are returned
+    //if ( result.statusCode >= 400 ) {}
+
     //stored in data, because some responses are arrays and others are structs
-    result[ 'data' ] = deserializedFileContent;
+    result[ 'data' ] = parsedFileContent;
 
     if ( variables.includeRaw ) {
       result[ 'raw' ] = {

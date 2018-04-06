@@ -216,18 +216,18 @@ component {
 
     // make it all lower case (and adjust length)
     str = str.trim().lcase().left( 127 );
-    // replace consecutive spaces and dashes and underscores with a single dash
-    str = str.ReReplace( '[\s\-_]{1,}', '-', 'all' );
+    // replace consecutive spaces and dashes and underscores with a single underscore
+    str = str.ReReplace( '[\s\-_]{1,}', '_', 'all' );
     // replace ampersand with and
     str = str.ReReplace( '&amp;', 'and', 'all' );
     str = str.ReReplace( '&.*?;', '', 'all' );
     str = str.ReReplace( '&', 'and', 'all' );
 
     // remove any remaining non-word chars
-    str = str.ReReplace( '[^a-zA-Z0-9\-\_]', '', 'all' );
+    str = str.ReReplace( '[^a-zA-Z0-9\_]', '', 'all' );
 
-    // remove dashes at the beginning or end of the string
-    str = str.ReReplace( '(^\-+)|(\-+$)', '', 'all' );
+    // remove underscores at the beginning or end of the string
+    str = str.ReReplace( '(^\_+)|(\_+$)', '', 'all' );
     //remove dots at the beginning or end of the string
     str = ReReplace(str, '(^\.+)|(\.+$)', '', 'all');
 

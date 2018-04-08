@@ -83,6 +83,10 @@ component {
 
     }
 
+    //if the name ends with API, remove it... redundant
+    if ( apiName.right( 4 ) == ' API' )
+      apiName = apiName.left( apiName.len() - 4 );
+
     name = name.trim().len() ? name : apiName.lcase() & 'cfc';
     author = author ?: moduleSettings.author;
 

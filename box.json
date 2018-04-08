@@ -21,8 +21,8 @@
     "projectURL":"",
     "license":[
         {
-            "type":"",
-            "URL":""
+            "type":"MIT",
+            "URL":"http://opensource.org/licenses/MIT"
         }
     ],
     "contributors":[],

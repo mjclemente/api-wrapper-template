@@ -87,7 +87,7 @@ component {
     if ( apiName.right( 4 ) == ' API' )
       apiName = apiName.left( apiName.len() - 4 );
 
-    name = name.trim().len() ? name : apiName.lcase() & ' CFML';
+    name = name.trim().len() ? name : apiName & ' CFML';
     author = author ?: moduleSettings.author;
     //if the endpoint ends with a slash, remove it
     if ( apiEndpointUrl.right( 1 ) == '/' )

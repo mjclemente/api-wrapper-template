@@ -1,8 +1,8 @@
 {
     "name":"API Wrapper Template",
-    "version":"0.1.1",
+    "version":"0.1.5",
     "author":"Matthew J. Clemente <mjclemente@gmail.com>",
-    "location":"mjclemente/api-wrapper-template#v0.1.1",
+    "location":"mjclemente/api-wrapper-template#v0.1.5",
     "homepage":"https://github.com/mjclemente/api-wrapper-template",
     "documentation":"",
     "repository":{

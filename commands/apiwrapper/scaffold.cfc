@@ -89,6 +89,9 @@ component {
 
     name = name.trim().len() ? name : apiName.lcase() & 'cfc';
     author = author ?: moduleSettings.author;
+    //if the endpoint ends with a slash, remove it
+    if ( apiEndpointUrl.right( 1 ) == '/' )
+      apiEndpointUrl = apiEndpointUrl.left( apiEndpointUrl.len() - 1 );
 
     for ( var arg in arguments ) {
       if ( !arrayContains( [ 'wizard', 'quickStart' ], arg ) )

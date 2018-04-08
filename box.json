@@ -6,9 +6,9 @@
     "homepage":"https://github.com/mjclemente/api-wrapper-template",
     "documentation":"",
     "repository":{
-        "type":"",
-        "URL":""
-    },
+        "type":"git",
+        "URL":"https://github.com/mjclemente/api-wrapper-template"
+},
     "bugs":"",
     "slug":"api-wrapper-template",
     "shortDescription":"A template for building API clients in CFML",

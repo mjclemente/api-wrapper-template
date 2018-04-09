@@ -8,7 +8,7 @@ The API wrapper code in this project builds on the API frameworks built by [jcbe
 
 ## Package Installation
 
-You will need [CommandBox](https://www.ortussolutions.com/products/commandbox) installed to use this tool.<sup id="a1">[1](#f1)</sup> From within the terminal, simply run the following command to install the module.
+You will need [CommandBox](https://www.ortussolutions.com/products/commandbox) installed to use this tool.<sup id="anchor1">[1](#footnote1)</sup> From within the terminal, simply run the following command to install the module.
 ```
 $ box install api-wrapper-template
 ```
@@ -35,4 +35,4 @@ apiWrapper scaffold --wizard
 apiWrapper scaffold-wizard
 ```
 
-1. <small id="f1"> If you're a ColdFusion developer and you're not already using CommandBox... you really, really should be. As I've said before, it's hard to explain how helpful it is. If have questions about CommandBox, feel free to ask me, or, for more professional help, ask [Brad Wood](https://twitter.com/bdw429s). </small> [↩](#a1) 
+1. <small id="footnote1"> If you're a ColdFusion developer and you're not already using CommandBox... you really, really should be. As I've said before, it's hard to explain how helpful it is. If have questions about CommandBox, feel free to ask me, or, for more professional help, ask [Brad Wood](https://twitter.com/bdw429s). </small> [↩](#anchor1) 

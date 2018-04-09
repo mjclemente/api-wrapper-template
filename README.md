@@ -33,6 +33,30 @@ To scaffold your API wrapper template in Wizard mode, enter the CommandBox CLI a
 apiWrapper scaffold --wizard
 ```
 
+Here is the information used to scaffold the API wrapper template:
+
+#### `apiName`
+Name of the API this library will wrap. [i.e. Stripe]
+
+#### `apiEndpointUrl`
+Base endpoint URL for API calls. [i.e. https://api.stripe.com/v1]
+
+#### `apiDocUrl`
+URL of the API documentation homepage
+
+#### `name`
+Name for the wrapper [i.e. StripeCFC]
+
+#### `description`
+A short description of the wrapper.
+
+#### `author`
+Name of the author of the wrapper.
+
+#### `quickStart`
+Do you want to quickStart the project? (After scaffolding, cd into project and start server [defaults to false])
+
+
 ___
 ### A Note on CommandBox for New Developers
 If you're a ColdFusion developer and you're not already using CommandBox... you really, really should be. As I've said before, it's hard to explain how helpful it is. If have questions about CommandBox, feel free to ask me, or, for more professional help, ask [Brad Wood](https://twitter.com/bdw429s). [↩](#package-installation) 

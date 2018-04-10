@@ -25,7 +25,7 @@ Running the command `apiWrapper scaffold` creates a folder within the current wo
 
 The `apiWrapper` module has two modes:
 
-1. Wizard: For first time users, this is the way to go. Get walked through all of the arguments, with helper text.
+1. Wizard: For first time users, this is the way to go. Get walked through all of the parameters, with helper text.
 2. Manual: Once you've used this module a few times, you may want to manually provide the arguments that you know are applicable to your API.
 
 To scaffold your API wrapper template in Wizard mode, enter the CommandBox CLI and type:
@@ -33,28 +33,36 @@ To scaffold your API wrapper template in Wizard mode, enter the CommandBox CLI a
 apiWrapper scaffold --wizard
 ```
 
-Here is the information used to scaffold the API wrapper template:
+And to run it manualy, simply leave off `--wizard` and provide the desired parameters, for example:
+```
+apiwrapper scaffold apiName="The Cat API" apiEndpointUrl=http://thecatapi.com/api
+```
 
-#### `apiName`
-Name of the API this library will wrap. [i.e. Stripe]
+The module will use the provided parameters to scaffold your API wrapper in the current working directory. So what are the parameters and what do they do? Just continue reading...
 
-#### `apiEndpointUrl`
-Base endpoint URL for API calls. [i.e. https://api.stripe.com/v1]
+### Scaffolding parameters
+Here is an overview of the information used to scaffold the API wrapper template; the italicized text is the hint provided by the scaffolding wizard. Asterisks indicate that the parameter is required.
+
+#### `apiName` *
+*Name of the API this library will wrap. [i.e. Stripe]* - This is arguably the most important parameter. It's used to generate the name of the project folder and the name of the core CFC file. It's also used as a fallback for generating a name for your wrapper, if you don't provide one yourself. You'll want to keep it short and accurate.
+
+#### `apiEndpointUrl`*
+*Base endpoint URL for API calls. [i.e. https://api.stripe.com/v1]* - This value is a constant in nearly all APIs and is generally one of the first things provided in the documentation. It's used as a core variable in the wrapper component; you can't generate the API wrapper if you don't know where the requests are going.
 
 #### `apiDocUrl`
-URL of the API documentation homepage
+*URL of the API documentation homepage* - When this module generates the API wrapper, a README file is created with some basic information about the project. The URL of the API's documentation is included, if you provide it here. This will be helpful for others using your wrapper, and you may actually find it helpful too, as you'll undoubtedly be returning to the docs a lot while writing the wrapper. 
 
 #### `name`
-Name for the wrapper [i.e. StripeCFC]
+*Name for the wrapper [i.e. StripeCFC]* - This refers to what you want to call your API wrapper project. It doesn't have any practical bearing on how the API wrapper works, but it will appear in the README and in the wrapper component code. If you leave it blank, the wrapper will be named following the convention "{API Name} + CFML".
 
 #### `description`
-A short description of the wrapper.
+*A short description of the wrapper.* - Pretty self-explanatory. This text will appear in the README, if you provide it. You can always update it later, as you work on the wrapper.
 
 #### `author`
-Name of the author of the wrapper.
+*Name of the author of the wrapper.* - Your name should go here. It will appear in the copyright text within the wrapper component, as well as the project license.
 
 #### `quickStart`
-Do you want to quickStart the project? (After scaffolding, cd into project and start server [defaults to false])
+*Do you want to quickStart the project? (After scaffolding, cd into project and start server [defaults to false])* - This is a convenience parameter for quickly diving into the project. If set to true, once the wrapper is scaffolded, the CommandBox CLI will cd into the new folder and start the embedded ColdFusion server (which defaults to ACF11).
 
 
 ___

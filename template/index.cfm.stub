@@ -1,4 +1,4 @@
 <cfscript>
-  // @@apiNameSlug@@ = new @@apiNameSlug@@.@@apiNameSlug@@( apiKey = 'xxxxxxxxx' );
+  // @@apiNameSlug@@ = new @@apiNameSlug@@.@@apiNameSlug@@(@@exampleCredentials@@);
   writeOutput( 'Uncomment your component and start configuring your authentication credentials to get started!' );
 </cfscript>

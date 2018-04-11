@@ -6,18 +6,13 @@
 component output="false" displayname="@@name@@"  {
 
   public any function init(
-    string apiKey = '',
-    string baseUrl = "@@apiEndpointUrl@@",
+    @@initCredentials@@string baseUrl = "@@apiEndpointUrl@@",
     numeric httpTimeout = 60,
     boolean includeRaw = true ) {
 
     structAppend( variables, arguments );
 
-    //map sensitive args to env variables or java system props
-    var secrets = {
-      'apiKey': '@@apiNameSlugUcase@@_API_KEY'
-    };
-
+    @@secrets@@
     var system = createObject( 'java', 'java.lang.System' );
 
     for ( var key in secrets ) {
@@ -140,9 +135,8 @@ component output="false" displayname="@@name@@"  {
   private struct function getBaseHttpHeaders() {
     return {
       'Accept' : 'application/json',
-      'Content-Type' : 'application/json',
-      'User-Agent' : '@@name@@',
-      'Authorization' : 'Bearer #variables.apiKey#'
+      'Content-Type' : 'application/json',@@authHeaders@@
+      'User-Agent' : '@@name@@'
     };
   }
 
@@ -162,7 +156,7 @@ component output="false" displayname="@@name@@"  {
     var requestHeaders = parseHeaders( headers );
     var requestBody = parseBody( payload );
 
-    cfhttp( url = fullPath, method = httpMethod, result = 'result' ) {
+    cfhttp( url = fullPath, method = httpMethod, @@authCredentials@@ result = 'result' ) {
 
       if ( isJsonPayload( headers ) ) {
 

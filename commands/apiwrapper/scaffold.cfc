@@ -139,16 +139,17 @@ component {
     if ( !directoryExists( wrapperDirectory ) )
       directoryCreate( wrapperDirectory );
 
+    //Prep path for authentication replacements
+    if ( apiAuthentication == 'None' ) {
+      var authenticationPath = 'authentication/none/';
+    } else if ( apiAuthentication == 'Basic' ) {
+      var authenticationPath = 'authentication/basic/';    
+    } else {
+      var authenticationPath = 'authentication/apikey/';
+    }
+
     var serverJson = fileRead( templatePath & "server.json.stub" );
     fileWrite( projectDirectory & "/server.json", serverJson );
-
-    var index = fileRead( templatePath & "index.cfm.stub" );
-    substitutions.each( 
-      function( key, value ) {
-        index = index.replaceNoCase( '@@#key#@@', value, 'all' );
-      }
-    );
-    fileWrite( projectDirectory & "/index.cfm", index );
 
     var readme = fileRead( templatePath & "README.md.stub" );
     substitutions.each( 
@@ -166,12 +167,35 @@ component {
     );
     fileWrite( wrapperDirectory & "/LICENSE", license );
 
+    var index = fileRead( templatePath & "index.cfm.stub" );
+    substitutions.each( 
+      function( key, value ) {
+        index = index.replaceNoCase( '@@#key#@@', value, 'all' );
+      }
+    );
+    
+    //replace credentials in example, based on authentication
+    var exampleCredentials = fileRead( templatePath & authenticationPath & 'exampleCredentials' );
+    index = index.replaceNocase( '@@exampleCredentials@@', exampleCredentials, 'all' );
+    fileWrite( projectDirectory & "/index.cfm", index );
+
     var template  = fileRead( templatePath & "template.cfc.stub" );
+
+    var authReplacements = [ 'initCredentials', 'secrets', 'authHeaders', 'authCredentials' ];
+
+    authReplacements.each( 
+      function( item, index ) {
+        var authValue  = fileRead( templatePath & authenticationPath & item );
+        template = template.replaceNocase( '@@#item#@@', authValue, 'all' );
+      }
+    );
+    
     substitutions.each( 
       function( key, value ) {
         template = template.replaceNoCase( '@@#key#@@', value, 'all' );
       }
     );
+
     fileWrite( wrapperDirectory & "/#substitutions.apiNameSlug#.cfc", template );
 
     print.line()

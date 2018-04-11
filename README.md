@@ -49,6 +49,9 @@ Here is an overview of the information used to scaffold the API wrapper template
 #### `apiEndpointUrl`*
 *Base endpoint URL for API calls. [i.e. https://api.stripe.com/v1]* - This value is a constant in nearly all APIs and is generally one of the first things provided in the documentation. It's used as a core variable in the wrapper component; you can't generate the API wrapper if you don't know where the requests are going.
 
+#### `apiAuthentication`
+*Type of authentication used [None, Basic, Apikey, Other]* - This value is used to add/remove boilerplate code related to the type of authentication the API requires. The default is `apikey`. If the API uses Basic Authentication or some form of API key authentication, you will likely need to customize the wrapper further, but this will get you started.
+
 #### `apiDocUrl`
 *URL of the API documentation homepage* - When this module generates the API wrapper, a README file is created with some basic information about the project. The URL of the API's documentation is included, if you provide it here. This will be helpful for others using your wrapper, and you may actually find it helpful too, as you'll undoubtedly be returning to the docs a lot while writing the wrapper. 
 

@@ -6,6 +6,8 @@ component extends="scaffold" excludeFromHelp=false {
   /**
   * @apiName Name of the API this library will wrap. [i.e. Stripe]
   * @apiEndpointUrl Base endpoint URL for API calls. [i.e. https://api.stripe.com/v1]
+  * @apiAuthentication.hint Type of authentication used [None, Basic, Apikey, Other]
+  * @apiAuthentication.optionsUDF completeAuthentication
   * @apiDocUrl URL of the API documentation homepage
   * @name Name for the wrapper [i.e. StripeCFC]
   * @description A short description of the wrapper.
@@ -14,6 +16,7 @@ component extends="scaffold" excludeFromHelp=false {
   function run(
     required string apiName,
     required string apiEndpointUrl,
+    required string apiAuthentication,
     required string apiDocUrl,
     required string name,
     required string description,

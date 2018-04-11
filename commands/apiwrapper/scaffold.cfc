@@ -25,6 +25,8 @@ component {
   /**
   * @apiName Name of the API this library will wrap. [i.e. Stripe]
   * @apiEndpointUrl Base endpoint URL for API calls. [i.e. https://api.stripe.com/v1]
+  * @apiAuthentication.hint Type of authentication used [None, Basic, Apikey, Other]
+  * @apiAuthentication.optionsUDF completeAuthentication
   * @apiDocUrl URL of the API documentation homepage
   * @name Name for the wrapper [i.e. StripeCFC]
   * @description A short description of the wrapper.
@@ -35,6 +37,7 @@ component {
   function run (
     string apiName = "",
     string apiEndpointUrl = "",
+    string apiAuthentication = "Apikey",
     string apiDocUrl = '',
     string name = '',
     string description = '',
@@ -232,6 +235,10 @@ component {
     str = str.ReReplace( '[^a-z0-9]', '', 'all' );
 
     return str;
+  }
+
+  public array function completeAuthentication() {
+    return [ 'none', 'basic', 'apikey', 'other' ];
   }
 
 }

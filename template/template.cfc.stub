@@ -8,7 +8,7 @@ component output="false" displayname="@@name@@"  {
   public any function init(
     @@initCredentials@@string baseUrl = "@@apiEndpointUrl@@",
     numeric httpTimeout = 60,
-    boolean includeRaw = true ) {
+    boolean includeRaw = false ) {
 
     structAppend( variables, arguments );
 

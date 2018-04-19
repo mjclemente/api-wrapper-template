@@ -4,6 +4,8 @@
 * Licensed under MIT (https://mit-license.org)
 */
 component displayname="@@name@@"  {
+  
+  variables._@@nameSlug@@_version = '0.0.0'; 
 
   public any function init(
     @@initCredentials@@string baseUrl = "@@apiEndpointUrl@@",

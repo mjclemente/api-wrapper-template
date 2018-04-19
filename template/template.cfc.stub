@@ -3,7 +3,7 @@
 * Copyright @@copyrightYear@@ @@copyright@@
 * Licensed under MIT (https://mit-license.org)
 */
-component output="false" displayname="@@name@@"  {
+component displayname="@@name@@"  {
 
   public any function init(
     @@initCredentials@@string baseUrl = "@@apiEndpointUrl@@",

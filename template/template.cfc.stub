@@ -137,7 +137,7 @@ component displayname="@@name@@"  {
     return {
       'Accept' : 'application/json',
       'Content-Type' : 'application/json',@@authHeaders@@
-      'User-Agent' : '@@name@@'
+      'User-Agent' : '@@name@@/#variables._@@nameSlug@@_version# (ColdFusion)'
     };
   }
 

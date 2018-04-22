@@ -124,7 +124,7 @@ component displayname="@@name@@"  {
       result[ 'raw' ] = {
         'method' : ucase( httpMethod ),
         'path' : fullApiPath,
-        'params' : serializeJSON( queryParams ),
+        'params' : parseQueryParams( queryParams ),
         'response' : apiResponse.fileContent,
         'responseHeaders' : apiResponse.responseheader
       };

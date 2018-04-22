@@ -126,6 +126,7 @@ component displayname="@@name@@"  {
         'method' : ucase( httpMethod ),
         'path' : fullApiPath,
         'params' : parseQueryParams( queryParams ),
+        'payload' : parseBody( payload ),
         'response' : apiResponse.fileContent
       };
     }

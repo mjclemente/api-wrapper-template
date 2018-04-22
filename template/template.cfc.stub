@@ -98,7 +98,8 @@ component displayname="@@name@@"  {
     var result = {
       'responseTime' = getTickCount() - requestStart,
       'statusCode' = listFirst( apiResponse.statuscode, " " ),
-      'statusText' = listRest( apiResponse.statuscode, " " )
+      'statusText' = listRest( apiResponse.statuscode, " " ),
+      'headers' = apiResponse.responseheader
     };
 
     var parsedFileContent = {};
@@ -125,8 +126,7 @@ component displayname="@@name@@"  {
         'method' : ucase( httpMethod ),
         'path' : fullApiPath,
         'params' : parseQueryParams( queryParams ),
-        'response' : apiResponse.fileContent,
-        'responseHeaders' : apiResponse.responseheader
+        'response' : apiResponse.fileContent
       };
     }
 

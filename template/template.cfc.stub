@@ -155,7 +155,6 @@ component displayname="@@name@@"  {
       : '' );
 
     var requestHeaders = parseHeaders( headers );
-    var requestBody = parseBody( payload );
 
     cfhttp( url = fullPath, method = httpMethod, @@authCredentials@@ result = 'result' ) {
 

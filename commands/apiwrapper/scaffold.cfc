@@ -103,7 +103,7 @@ component {
     print.line();
 
     //let's print some warnings, if the data doesn't look right
-    if ( !completeAuthentication().contains( apiAuthentication ) )
+    if ( !completeAuthentication().contains( lcase( apiAuthentication ) ) )
         print.yellowLine( "Warning: The apiAuthentication value doesn't match the list of valid options. ApiKey will be used." );
     if ( !isValid( 'url', apiEndpointUrl ) )
       print.yellowLine( "Warning: The apiEndpointUrl does not appear to be valid. This could cause issues." );

@@ -64,8 +64,8 @@ Here is an overview of the information used to scaffold the API wrapper template
 #### `author`
 *Name of the author of the wrapper.* - Your name should go here. It will appear in the copyright text within the wrapper component, as well as the project license.
 
-#### `quickStart`
-*Do you want to quickStart the project? (After scaffolding, cd into project and start server [defaults to false])* - This is a convenience parameter for quickly diving into the project. If set to true, once the wrapper is scaffolded, the CommandBox CLI will cd into the new folder and start the embedded ColdFusion server (which defaults to ACF11).
+#### `package`
+*Do you want to generate a box.json file, so this wrapper can be used and shared on ForgeBox? [defaults to false]* - If set to true, the arguments used to scaffold the API wrapper will also be used to populate a box.json file, so that you can distribute this package on ForgeBox Not sure what that means? I wrote a blog post about [publishing my first package to ForgeBox](https://blog.mattclemente.com/2018/02/20/publishing-my-first-package-to-forgebox.html); you can also check out the [official CommandBox docs on packages](https://commandbox.ortusbooks.com/package-management/creating-packages).
 
 
 ___

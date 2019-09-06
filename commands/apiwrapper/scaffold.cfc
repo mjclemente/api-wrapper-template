@@ -100,7 +100,7 @@ component {
 
     for ( var arg in arguments ) {
       if ( !arrayContains( [ 'wizard', 'quickStart' ], arg ) )
-        print.magentaLine( '- Set #arg# = #arguments[ arg ]#' );
+        print.cyanLine( '- Set #arg# = #arguments[ arg ]#' );
     }
     print.line();
 

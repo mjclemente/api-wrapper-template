@@ -201,6 +201,17 @@ component {
 
     fileWrite( wrapperDirectory & "/#substitutions.apiNameSlug#.cfc", template );
 
+    if ( package ) {
+      print.line( "Generating box.json..." );
+      command( 'cd #wrapperDirectory#' ).run();
+      command( 'package init' )
+        .params( name=name, slug=substitutions.nameSlug, shortDescription=description, author=author )
+        .run();
+      command( 'cd ../../' ).run();
+    } else {
+      print.line( "Skipping box.json generation." );
+    }
+
     print.line()
       .greenLine( "Success! Your API wrapper is scaffolded!" )
       .line();

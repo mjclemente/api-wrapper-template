@@ -98,6 +98,8 @@ component {
     if ( apiEndpointUrl.right( 1 ) == '/' )
       apiEndpointUrl = apiEndpointUrl.left( apiEndpointUrl.len() - 1 );
 
+    print.line();
+
     for ( var arg in arguments ) {
       if ( !arrayContains( [ 'wizard', 'quickStart' ], arg ) )
         print.cyanLine( '- Set #arg# = #arguments[ arg ]#' );
@@ -202,7 +204,7 @@ component {
     fileWrite( wrapperDirectory & "/#substitutions.apiNameSlug#.cfc", template );
 
     if ( package ) {
-      print.line( "Generating box.json..." );
+      print.line().line( "Generating box.json..." );
       command( 'cd #wrapperDirectory#' ).run();
       command( 'package init' )
         .params( name=name, slug=substitutions.nameSlug, shortDescription=description, author=author )

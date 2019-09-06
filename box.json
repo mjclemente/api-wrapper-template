@@ -9,7 +9,7 @@
         "type":"git",
         "URL":"https://github.com/mjclemente/api-wrapper-template"
 },
-    "bugs":"",
+    "bugs":"https://github.com/mjclemente/api-wrapper-template/issues",
     "slug":"api-wrapper-template",
     "shortDescription":"A template for building API clients in CFML",
     "description":"",

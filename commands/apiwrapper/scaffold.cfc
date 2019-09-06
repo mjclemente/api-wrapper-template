@@ -31,6 +31,7 @@ component {
   * @name Name for the wrapper [i.e. StripeCFC]
   * @description A short description of the wrapper.
   * @author Name of the author of the wrapper.
+  * @package Create a box.json so this can be used as a Forgebox package (yes/no)
   * @wizard Run the init wizard, defaults to false
   * @quickStart After scaffolding, cd into project and start server [defaults to false]
   */
@@ -42,6 +43,7 @@ component {
     string name = '',
     string description = '',
     string author,
+    boolean package = false,
     boolean wizard = false,
     boolean quickStart = false ) {
     

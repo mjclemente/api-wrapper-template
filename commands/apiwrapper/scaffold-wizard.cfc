@@ -12,6 +12,7 @@ component extends="scaffold" excludeFromHelp=false {
   * @name Name for the wrapper [i.e. StripeCFC]
   * @description A short description of the wrapper.
   * @author Name of the author of the wrapper.
+  * @package Create a box.json so this can be used as a Forgebox package (yes/no)
   */
   function run(
     required string apiName,
@@ -21,10 +22,18 @@ component extends="scaffold" excludeFromHelp=false {
     required string name,
     required string description,
     required string author,
+    boolean package = false,
     boolean quickStart = false
   ){
     // turn off wizard
     arguments.wizard = false;
+
+    package = ask( 'Do you want to generate a box.json file, so this wrapper can be used and shared on ForgeBox? (Yes/No) : ' );
+
+    if ( package == 'y' ) package = true;
+
+    if ( !isBoolean( package ) )
+      package = false;
 
     quickStart = ask( 'Do you want to quickStart the project? (After scaffolding, cd into project and start server [defaults to false]): (Yes/No) : ' );
 

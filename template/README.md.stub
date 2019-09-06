@@ -17,7 +17,7 @@ If you need to acknowledge the work of any other developers, do it here.
 The following is a minimal example of doing something helpful.
 
 ```cfc
-@@apiNameSlug@@ = new @@apiNameSlug@@.@@apiNameSlug@@( apiKey = 'xxx' );
+@@apiNameSlug@@ = new path.to.@@nameSlug@@.@@apiNameSlug@@( apiKey = 'xxx' );
 
 @@apiNameSlug@@.doSomething( argument );
 ```

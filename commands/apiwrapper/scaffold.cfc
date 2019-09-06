@@ -33,7 +33,6 @@ component {
   * @author Name of the author of the wrapper.
   * @package Create a box.json so this can be used as a Forgebox package (yes/no)
   * @wizard Run the init wizard, defaults to false
-  * @quickStart After scaffolding, cd into project and start server [defaults to false]
   */
   function run (
     string apiName = "",
@@ -44,8 +43,7 @@ component {
     string description = '',
     string author,
     boolean package = false,
-    boolean wizard = false,
-    boolean quickStart = false ) {
+    boolean wizard = false ) {
     
     if ( wizard ) {
       command( 'apiwrapper scaffold-wizard' ).run();
@@ -101,7 +99,7 @@ component {
     print.line();
 
     for ( var arg in arguments ) {
-      if ( !arrayContains( [ 'wizard', 'quickStart' ], arg ) )
+      if ( !arrayContains( [ 'wizard' ], arg ) )
         print.cyanLine( '- Set #arg# = #arguments[ arg ]#' );
     }
     print.line();
@@ -218,17 +216,7 @@ component {
       .greenLine( "Success! Your API wrapper is scaffolded!" )
       .line();
 
-    if ( quickStart ) {
-    
-      print.line( "Changing directory to project folder..." );
-      command( 'cd #projectDirectory#' ).run();
-
-      print.line( "Starting a server, so you can start developing right away!" );
-      command( 'server start' ).run();
-    
-    } else {
-      print.line( "Now it's time to CD into the directory and start developing!" );
-    }
+    print.line( "Now it's time to CD into the directory and start developing!" );
 
     print.line().line();
   }

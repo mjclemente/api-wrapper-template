@@ -22,8 +22,7 @@ component extends="scaffold" excludeFromHelp=false {
     required string name,
     required string description,
     required string author,
-    boolean package = false,
-    boolean quickStart = false
+    boolean package = false
   ){
     // turn off wizard
     arguments.wizard = false;
@@ -34,13 +33,6 @@ component extends="scaffold" excludeFromHelp=false {
 
     if ( !isBoolean( package ) )
       package = false;
-
-    quickStart = ask( 'Do you want to quickStart the project? (After scaffolding, cd into project and start server [defaults to false]): (Yes/No) : ' );
-
-    if ( quickStart == 'y' ) quickStart = true;
-
-    if ( !isBoolean( quickStart ) )
-      quickStart = false;
 
     super.run( argumentCollection = arguments );
   }

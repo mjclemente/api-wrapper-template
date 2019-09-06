@@ -131,7 +131,7 @@ component {
     }
 
     var projectDirectory = fileSystemUtil.resolvePath( '#substitutions.apiNameSlug#Wrapper' );
-    var wrapperDirectory = projectDirectory & '/#substitutions.apiNameSlug#';
+    var wrapperDirectory = projectDirectory & '/#substitutions.nameSlug#';
 
     print.line().boldCyanLine( "Copying template over...." ).toConsole();
 

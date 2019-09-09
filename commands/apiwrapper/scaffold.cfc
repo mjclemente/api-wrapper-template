@@ -86,11 +86,12 @@ component {
 
     }
 
-    //if the name ends with API, remove it... redundant
-    if ( apiName.right( 4 ) == ' API' )
-      apiName = apiName.left( apiName.len() - 4 );
+    var apiShortName = toShortName( apiName );
+    var apiNameSlug = toProperFileName( apiShortName );
+    var apiFullName = toFullName( apiName );
+    var apiReference = toReferenceSyntax( apiName, apiDocUrl );
 
-    name = name.trim().len() ? name : apiName & ' CFML';
+    name = name.trim().len() ? name : apiShortName & ' CFML';
     author = author ?: moduleSettings.author;
     //if the endpoint ends with a slash, remove it
     if ( apiEndpointUrl.right( 1 ) == '/' )
@@ -117,19 +118,19 @@ component {
       print.yellowLine( "Warning: You didn't include a description. Considering adding an explanation of what your wrapper does in the README." );
     if ( !author.len() )
       print.yellowLine( "Warning: The author name is blank... don't you want credit for your work?" );
-
-    //let's create the extra variables that we need
+      
+    //let's create the extra variables that we nsseed
     var substitutions = {
       'name' : name,
       'author' : author,
       'apiEndpointUrl' : apiEndpointUrl,
       'description' : description,
       'nameSlug' : toProperFileName( name ),
-      'apiNameSlug' : toProperFileName( apiName ),
-      'apiNameSlugUcase' : toProperFileName( apiName ).uCase(),
+      'apiNameSlug' : apiNameSlug,
+      'apiNameSlugUcase' : apiNameSlug.uCase(),
       'copyright' : ( author.len() ? '#author#,' : '' ) & ' Matthew J. Clemente, John Berquist',
       'copyrightYear' : now().year(),
-      'apiReference' : apiDocUrl.len() ? '[#apiName# API](#apiDocUrl#)' : '#apiName# API'
+      'apiReference' : apiReference
     }
 
     var projectDirectory = fileSystemUtil.resolvePath( '#substitutions.apiNameSlug#Wrapper' );

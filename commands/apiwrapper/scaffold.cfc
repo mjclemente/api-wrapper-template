@@ -271,4 +271,59 @@ component {
     return [ 'none', 'basic', 'apikey', 'other' ];
   }
 
+  /**
+  * @hint If the name begins with 'the' and ends with 'api', we remove 'the' - it's unneeded. If it ends with 'api', we remove that because it's redundant. Otherwise the name stays the same.
+  */
+  public string function toShortName( string name ) {
+    var shortName = name.trim();
+    
+    var isDefinite = shortName.left( 4 ) == 'the ';
+    var includesAPI = shortName.right( 4 ) == ' api';
+    
+    if( isDefinite && includesAPI ) {
+      print.line( 'Decluttering API name for the slug by removing "the".' );
+      //shortName = shortName.mid( 5, shortName.len() - 8 );
+      shortName = shortName.right( shortName.len() - 4 );
+    } else if( includesAPI ) {
+      print.line( 'Decluttering API name for the slug by removing "api".' );
+      shortName = shortName.left( shortName.len() - 4 );
+    }
+
+    return shortName.trim();
+  }
+
+  /**
+  * @hint If the name doesn't begin with 'the', we add it. If it doesn't end with 'api', we add that too.
+  */
+  public string function toFullName( string name ) {
+    var fullName = name;
+
+    if( fullName.left( 4 ) != 'the ' ) {
+      fullName = 'the ' & fullName;
+    }
+
+    if( fullName.right( 3 ) != 'api' ) {
+      fullName &= ' API';
+    }
+
+    return fullName;
+  }
+
+  /**
+  * @hint Converts the provided API name and documentation link to a markdown link (with proper placement of the 'the' article, hopefully). If there's no link, the full name of the API is returned.
+  */
+  public string function toReferenceSyntax( string name, string link ) {
+    var apiReference = toFullName( name );
+
+    if( link.len() ) {
+      if( name.left( 4 ) == 'the ' ) {
+        apiReference = "[#apiReference#](#link#)";
+      } else {
+        apiReference = "the [#apiReference.replace( 'the ', '' )#](#link#)";
+      }
+    }
+
+    return apiReference;
+  }
+
 }

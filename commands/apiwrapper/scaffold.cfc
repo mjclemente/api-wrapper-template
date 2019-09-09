@@ -204,9 +204,10 @@ component {
 
     if ( package ) {
       print.line().line( "Generating box.json..." );
+      var boxDescription = 'A CFML wrapper for #apiFullName#. #description#';
       command( 'cd #wrapperDirectory#' ).run();
       command( 'package init' )
-        .params( name=name, slug=substitutions.nameSlug, shortDescription=description, author=author )
+        .params( name=name, slug=substitutions.nameSlug, shortDescription=boxDescription, author=author )
         .run();
       command( 'cd ../../' ).run();
     } else {

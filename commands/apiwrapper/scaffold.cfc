@@ -37,7 +37,7 @@ component {
   function run (
     string apiName = "",
     string apiEndpointUrl = "",
-    string apiAuthentication = "Apikey",
+    string apiAuthentication = "apikey",
     string apiDocUrl = '',
     string name = '',
     string description = '',

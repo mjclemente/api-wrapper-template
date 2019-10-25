@@ -25,7 +25,7 @@ Running the command `apiWrapper scaffold` creates a folder within the current wo
 
 The `apiWrapper` module has two modes:
 
-1. Wizard: For first time users, this is the way to go. Get walked through all of the parameters, with helper text.
+1. Wizard: Get walked through all of the parameters, with helper text. I still generally use this mode.
 2. Manual: Once you've used this module a few times, you may want to manually provide the arguments that you know are applicable to your API.
 
 To scaffold your API wrapper template in Wizard mode, enter the CommandBox CLI and type:

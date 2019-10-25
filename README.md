@@ -33,7 +33,7 @@ To scaffold your API wrapper template in Wizard mode, enter the CommandBox CLI a
 apiWrapper scaffold --wizard
 ```
 
-And to run it manualy, simply leave off `--wizard` and provide the desired parameters, for example:
+And to run it manually, simply leave off `--wizard` and provide the desired parameters, for example:
 ```
 apiwrapper scaffold apiName="The Cat API" apiEndpointUrl=http://thecatapi.com/api
 ```

@@ -155,8 +155,6 @@ component displayname="@@name@@"  {
       ? ( '?' & parseQueryParams( queryParams, false ) )
       : '' );
 
-    var requestHeaders = parseHeaders( headers );
-
     cfhttp( url = fullPath, method = httpMethod, @@authCredentials@@ result = 'result' ) {
 
       if ( isJsonPayload( headers ) ) {

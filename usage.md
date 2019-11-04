@@ -2,7 +2,7 @@
 
 Once you have used this tool to scaffold a project, you still need to actually write the API wrapper. The following is a brief guide to the conventions and structure of API wrappers built with this project.
 
-## Authenication
+## Authentication
 
 Making sure that authentication is handled correctly is the first step in building your API client. Obviously, if there is no authentication, you can skip this section.
 

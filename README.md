@@ -29,11 +29,13 @@ The `apiWrapper` module has two modes:
 2. Manual: Once you've used this module a few times, you may want to manually provide the arguments that you know are applicable to your API.
 
 To scaffold your API wrapper template in Wizard mode, enter the CommandBox CLI and type:
+
 ```
 apiWrapper scaffold --wizard
 ```
 
 And to run it manually, simply leave off `--wizard` and provide the desired parameters, for example:
+
 ```
 apiwrapper scaffold apiName="The Cat API" apiEndpointUrl=http://thecatapi.com/api
 ```

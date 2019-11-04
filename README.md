@@ -21,6 +21,8 @@ Once the module is installed, it uses the namespace: `apiWrapper`.
 
 Running the command `apiWrapper scaffold` creates a folder within the current working directory for building your API wrapper; it includes the boilerplate code needed for handling requests to most APIs. Once you've created a project with the command, you can simply configure authentication and then build out methods for interacting with the API's endpoints. The goal is to streamline the process of writing an API client, so you can focus on the fun part (actually working with the API).
 
+Once you've scaffolded your wrapper, check out the [usage](usage.md) documentation for more specifics on writing the actual wrapper for the API.
+
 ## Using the command: `apiWrapper`
 
 The `apiWrapper` module has two modes:

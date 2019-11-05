@@ -21,7 +21,7 @@ Once the module is installed, it uses the namespace: `apiWrapper`.
 
 Running the command `apiWrapper scaffold` creates a folder within the current working directory for building your API wrapper; it includes the boilerplate code needed for handling requests to most APIs. Once you've created a project with the command, you can simply configure authentication and then build out methods for interacting with the API's endpoints. The goal is to streamline the process of writing an API client, so you can focus on the fun part (actually working with the API).
 
-Once you've scaffolded your wrapper, check out the [usage](usage.md) documentation for more specifics on writing the actual wrapper for the API.
+**Once you've scaffolded your wrapper, check out the [Usage](usage.md) documentation for more specifics on writing the actual wrapper for the API.**
 
 ## Using the command: `apiWrapper`
 
@@ -70,7 +70,6 @@ Here is an overview of the information used to scaffold the API wrapper template
 
 #### `package`
 *Do you want to generate a box.json file, so this wrapper can be used and shared on ForgeBox? [defaults to false]* - If set to true, the arguments used to scaffold the API wrapper will also be used to populate a box.json file, so that you can distribute this package on ForgeBox Not sure what that means? I wrote a blog post about [publishing my first package to ForgeBox](https://blog.mattclemente.com/2018/02/20/publishing-my-first-package-to-forgebox.html); you can also check out the [official CommandBox docs on packages](https://commandbox.ortusbooks.com/package-management/creating-packages).
-
 
 ___
 ### A Note on CommandBox for New Developers

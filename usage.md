@@ -43,7 +43,7 @@ public any function init(
   boolean includeRaw = false ) {...}
 ```
 
-That API key is then passed as a header in every request to the API, because it is included in the `getBaseHttpHeaders()` method (you can learn a little more about this method below):
+That API key is then passed as a header in every request to the API, because it is included in the `getBaseHttpHeaders()` method (you can learn a little more about this method [below](#getbasehttpheaders)):
 
 ```cfc
 private struct function getBaseHttpHeaders() {
@@ -74,14 +74,15 @@ The value on the right is the name of an environment variable. If it is found, t
 
 **The names of the credentials and environment variables should be updated to suit your needs and the requirements of the API.**
 
+## API Endpoints and Method Structure
+
+
+## Important Methods
+
 ### `init()`
 
 ### `apiCall()`
 
 ### `getBaseHttpHeaders()`
 
-## Method Structure
-
-## Authentication
-
-### Environment Variables
+### `makeHttpRequest()`

@@ -76,12 +76,39 @@ The value on the right is the name of an environment variable. If it is found, t
 
 ## API Endpoints and Method Structure
 
+tldr; *API endpoints are mapped, one-to-one, to functions within the core wrapper component, and all HTTP requests are delegated to a single `apiCall()` method*
+
+When you wrapper is initialized, it saves the API's base URL (https://api.example.com) and any supplied authentication credentials in its `variables` scope. Requests to the API are then handled via functions, which you will need to write. Functions are mapped, one-to-one, to the API's endpoints. In that way, the component and its functions "wrap" the functionality of the API.
+
+Each function should accept the parameters required for interacting with the corresponding endpoint, ensure they are assembled correctly, and then pass them on to the component's `apiCall()` method, which does the actual work of handling the HTTP request. The API's response is then automatically returned to the caller as a struct.
+
+Here is a template for your wrapper's functions:
+
+```cfc
+public struct function methodName( required any argument ) {
+  return apiCall( METHOD, PATH, PARAMS, BODY, HEADERS );
+}
+```
+
+So, as an example, a function to retrieve an image from some API might look like this:
+
+```cfc
+public struct function getImage( required numeric id ) {
+  var params[ 'imageId' ] = id;
+  return apiCall( 'GET', '/images/image', params );
+}
+```
+
+For a better understanding of how the `apiCall()` method works, look at its [documentation](#apicall-required-string-httpmethod-required-string-path-struct-queryparams----any-payload---struct-headers) below.
+
+Once you've handled authentication, the process of writing your API wrapper primarily consists of writing these functions for each endpoint of the API.
 
 ## Important Methods
+When you're writing an API wrapper using this tool, it's helpful to understand the following methods and their purpose. There are more private methods, but they primarily assist the methods listed below.
 
 ### `init()`
 
-### `apiCall()`
+### `apiCall( required string httpMethod, required string path, struct queryParams = { }, any payload = '', struct headers = { } )`
 
 ### `getBaseHttpHeaders()`
 

@@ -110,11 +110,11 @@ Once you've handled authentication, the process of writing your API wrapper prim
 ## Important Methods
 When you're writing an API wrapper using this tool, it's helpful to understand the following methods and their purpose. While the wrapper does have additional private methods, they primarily exist in order to assist the methods listed below.
 
-### `init()`
+#### `init()`
 
 As discussed above, the primary purpose of this method is to set constants that will be used by the wrapper. These include the base endpoint for the API (https://api.example.com), and any credentials required for authentication. It also comes with an `includeRaw` option, which can be used to return additional information about the requests your wrapper is making to the API in the response struct.
 
-### `apiCall( required string httpMethod, required string path, struct queryParams = { }, any payload = '', struct headers = { } )`
+#### `apiCall( required string httpMethod, required string path, struct queryParams = { }, any payload = '', struct headers = { } )`
 
 The hard work of interacting with the API is handled by this method. All your wrapper's public methods, which interact with the API's endpoints, will delegate to this function. It takes the elements of an HTTP request, assembles them, and then passes them on to [`makeHttpRequest()`](#makehttprequest) in order to make the HTTP request to the API. It then processes the response and returns it to the caller. 
 
@@ -122,7 +122,7 @@ Assuming the `Content-Type` of the request is `application/json`, if the `payloa
 
 The struct of `queryParams` will automatically be assembled and added to the URL.
 
-### `getBaseHttpHeaders()`
+#### `getBaseHttpHeaders()`
 
 This returns a struct of keys/values that are passed as headers in every request to the API. By default it includes the standard headers: `Accept`, `Content-Type`, and `User-Agent`.
 
@@ -130,6 +130,6 @@ The `Content-Type` and `Accept` here default to `application/json`, but you may 
 
 This method is typically where you define authentication headers required to work with the API.
 
-### `makeHttpRequest()`
+#### `makeHttpRequest()`
 
 This method handles the actual `cfhttp` request. The response is passed back to the `apiCall()` method for handling, before it's returned to the client.

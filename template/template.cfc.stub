@@ -9,7 +9,8 @@ component displayname="@@name@@"  {
 
   public any function init(
     @@initCredentials@@string baseUrl = "@@apiEndpointUrl@@",
-    boolean includeRaw = false ) {
+    boolean includeRaw = false,
+    numeric httpTimeout = 50 ) {
 
     structAppend( variables, arguments );
 
@@ -155,7 +156,7 @@ component displayname="@@name@@"  {
       ? ( '?' & parseQueryParams( queryParams, false ) )
       : '' );
 
-    cfhttp( url = fullPath, method = httpMethod, @@authCredentials@@ result = 'result' ) {
+    cfhttp( url = fullPath, method = httpMethod, @@authCredentials@@ result = 'result', timeout = variables.httpTimeout ) {
 
       if ( isJsonPayload( headers ) ) {
 

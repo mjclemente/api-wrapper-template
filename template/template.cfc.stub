@@ -4,316 +4,314 @@
 * Licensed under MIT (https://mit-license.org)
 */
 component displayname="@@name@@"  {
-  
-  variables._@@nameSlug@@_version = '0.0.0'; 
 
-  public any function init(
-    @@initCredentials@@string baseUrl = "@@apiEndpointUrl@@",
-    boolean includeRaw = false,
-    numeric httpTimeout = 50 ) {
+	variables._@@nameSlug@@_version = '0.0.0'; 
 
-    structAppend( variables, arguments );
+	public any function init(
+		@@initCredentials@@string baseUrl = "@@apiEndpointUrl@@",
+		boolean includeRaw = false,
+		numeric httpTimeout = 50 
+	) {
 
-    @@secrets@@
-    var system = createObject( 'java', 'java.lang.System' );
+		structAppend( variables, arguments );
 
-    for ( var key in secrets ) {
-      //arguments are top priority
-      if ( variables[ key ].len() ) continue;
+		@@secrets@@
+		var system = createObject( 'java', 'java.lang.System' );
 
-      //check environment variables
-      var envValue = system.getenv( secrets[ key ] );
-      if ( !isNull( envValue ) && envValue.len() ) {
-        variables[ key ] = envValue;
-        continue;
-      }
+		for ( var key in secrets ) {
+			//arguments are top priority
+			if ( variables[ key ].len() ) continue;
 
-      //check java system properties
-      var propValue = system.getProperty( secrets[ key ] );
-      if ( !isNull( propValue ) && propValue.len() ) {
-        variables[ key ] = propValue;
-      }
-    }
+			//check environment variables
+			var envValue = system.getenv( secrets[ key ] );
+			if ( !isNull( envValue ) && envValue.len() ) {
+				variables[ key ] = envValue;
+				continue;
+			}
 
-    //declare file fields to be handled via multipart/form-data **Important** this is not applicable if payload is application/json
-    variables.fileFields = [];
+			//check java system properties
+			var propValue = system.getProperty( secrets[ key ] );
+			if ( !isNull( propValue ) && propValue.len() ) {
+				variables[ key ] = propValue;
+			}
+		
 
-    return this;
-  }
+		//declare file fields to be handled via multipart/form-data **Important** this is not applicable if payload is application/json
+		variables.fileFields = [];
 
-  /**
-  * Add your first resource here
-  * And consider including a link to the docs
-  */
+		return this;
+	}
 
-  /**
-  * @hint Create a resource
-  */
-  // public struct function createRESOURCE( required any RESOURCE ) {
-  //   return apiCall( 'POST', '/RESOURCE', {}, {} );
-  // }
+	/**
+	* Add your first resource here
+	* And consider including a link to the docs
+	*/
 
-  /**
-  * @hint List resources
-  */
-  // public struct function listRESOURCES() {
-  //   return apiCall( 'GET', '/RESOURCE' );
-  // }
+	/**
+	* @hint Create a resource
+	*/
+	// public struct function createRESOURCE( required any RESOURCE ) {
+	//   return apiCall( 'POST', '/RESOURCE', {}, {} );
+	// }
 
-  /**
-  * @hint Retrieve a single resource by ID.
-  */
-  // public struct function getRESOURCE( required numeric id ) {
-  //   return apiCall( 'GET', '/RESOURCE/#id#' );
-  // }
+	/**
+	* @hint List resources
+	*/
+	// public struct function listRESOURCES() {
+	//   return apiCall( 'GET', '/RESOURCE' );
+	// }
 
-  /**
-  * @hint Delete a single resource by ID.
-  */
-  // public struct function deleteRESOURCE( required numeric id ) {
-  //   return apiCall( 'DELETE', '/RESOURCE/#id#' );
-  // }
+	/**
+	* @hint Retrieve a single resource by ID.
+	*/
+	// public struct function getRESOURCE( required numeric id ) {
+	//   return apiCall( 'GET', '/RESOURCE/#id#' );
+	// }
 
-  /**
-  * @hint Update a resource by ID.
-  */
-  // public struct function updateRESOURCE( required numeric id, required any RESOURCE ) {
-  //   return apiCall( 'PUT', '/RESOURCE/#id#', {}, {} );
-  // }
+	/**
+	* @hint Delete a single resource by ID.
+	*/
+	// public struct function deleteRESOURCE( required numeric id ) {
+	//   return apiCall( 'DELETE', '/RESOURCE/#id#' );
+	// }
 
-  // PRIVATE FUNCTIONS
-  private struct function apiCall(
-    required string httpMethod,
-    required string path,
-    struct queryParams = { },
-    any payload = '',
-    struct headers = { } )  {
+	/**
+	* @hint Update a resource by ID.
+	*/
+	// public struct function updateRESOURCE( required numeric id, required any RESOURCE ) {
+	//   return apiCall( 'PUT', '/RESOURCE/#id#', {}, {} );
+	// }
 
-    var fullApiPath = variables.baseUrl & path;
-    var requestHeaders = getBaseHttpHeaders();
-    requestHeaders.append( headers, true );
+	// PRIVATE FUNCTIONS
+	private struct function apiCall(
+		required string httpMethod,
+		required string path,
+		struct queryParams = { },
+		any payload = '',
+		struct headers = { } ) 
+	{
 
-    var requestStart = getTickCount();
-    var apiResponse = makeHttpRequest( httpMethod = httpMethod, path = fullApiPath, queryParams = queryParams, headers = requestHeaders, payload = payload );
+		var fullApiPath = variables.baseUrl & path;
+		var requestHeaders = getBaseHttpHeaders();
+		requestHeaders.append( headers, true );
 
-    var result = {
-      'responseTime' = getTickCount() - requestStart,
-      'statusCode' = listFirst( apiResponse.statuscode, " " ),
-      'statusText' = listRest( apiResponse.statuscode, " " ),
-      'headers' = apiResponse.responseheader
-    };
+		var requestStart = getTickCount();
+		var apiResponse = makeHttpRequest( httpMethod = httpMethod, path = fullApiPath, queryParams = queryParams, headers = requestHeaders, payload = payload );
 
-    var parsedFileContent = {};
+		var result = {
+			'responseTime' = getTickCount() - requestStart,
+			'statusCode' = listFirst( apiResponse.statuscode, " " ),
+			'statusText' = listRest( apiResponse.statuscode, " " ),
+			'headers' = apiResponse.responseheader
+		};
 
-    // Handle response based on mimetype
-    var mimeType = apiResponse.mimetype ?: requestHeaders[ 'Content-Type' ];
+		var parsedFileContent = {};
 
-    if ( mimeType == 'application/json' && isJson( apiResponse.fileContent ) ) {
-      parsedFileContent = deserializeJSON( apiResponse.fileContent );
-    } else if ( mimeType.listLast( '/' ) == 'xml' && isXml( apiResponse.fileContent ) ) {
-      parsedFileContent = xmlToStruct( apiResponse.fileContent );
-    } else {
-      parsedFileContent = apiResponse.fileContent;
-    }
+	  	// Handle response based on mimetype
+		var mimeType = apiResponse.mimetype ?: requestHeaders[ 'Content-Type' ];
 
-    //can be customized by API integration for how errors are returned
-    //if ( result.statusCode >= 400 ) {}
+		if ( mimeType == 'application/json' && isJson( apiResponse.fileContent ) ) {
+			parsedFileContent = deserializeJSON( apiResponse.fileContent );
+		} else if ( mimeType.listLast( '/' ) == 'xml' && isXml( apiResponse.fileContent ) ) {
+			parsedFileContent = xmlToStruct( apiResponse.fileContent );
+		} else {
+			parsedFileContent = apiResponse.fileContent;
+		}
 
-    //stored in data, because some responses are arrays and others are structs
-    result[ 'data' ] = parsedFileContent;
+		//can be customized by API integration for how errors are returned
+		//if ( result.statusCode >= 400 ) {}
 
-    if ( variables.includeRaw ) {
-      result[ 'raw' ] = {
-        'method' : ucase( httpMethod ),
-        'path' : fullApiPath,
-        'params' : parseQueryParams( queryParams ),
-        'payload' : parseBody( payload ),
-        'response' : apiResponse.fileContent
-      };
-    }
+		//stored in data, because some responses are arrays and others are structs
+		result[ 'data' ] = parsedFileContent;
 
-    return result;
-  }
+		if ( variables.includeRaw ) {
+			result[ 'raw' ] = {
+				'method' : ucase( httpMethod ),
+				'path' : fullApiPath,
+				'params' : parseQueryParams( queryParams ),
+				'payload' : parseBody( payload ),
+				'response' : apiResponse.fileContent
+			};
+		}
 
-  private struct function getBaseHttpHeaders() {
-    return {
-      'Accept' : 'application/json',
-      'Content-Type' : 'application/json',@@authHeaders@@
-      'User-Agent' : '@@name@@/#variables._@@nameSlug@@_version# (ColdFusion)'
-    };
-  }
+		return result;
+	}
 
-  private any function makeHttpRequest(
-    required string httpMethod,
-    required string path,
-    struct queryParams = { },
-    struct headers = { },
-    any payload = ''
-  ) {
-    var result = '';
+	private struct function getBaseHttpHeaders() {
+		return {
+			'Accept' : 'application/json',
+			'Content-Type' : 'application/json',@@authHeaders@@
+			'User-Agent' : '@@name@@/#variables._@@nameSlug@@_version# (ColdFusion)'
+		};
+	}
 
-    var fullPath = path & ( !queryParams.isEmpty()
-      ? ( '?' & parseQueryParams( queryParams, false ) )
-      : '' );
+	private any function makeHttpRequest(
+		required string httpMethod,
+		required string path,
+		struct queryParams = { },
+		struct headers = { },
+		any payload = ''
+	) {
+		var result = '';
 
-    cfhttp( url = fullPath, method = httpMethod, @@authCredentials@@ result = 'result', timeout = variables.httpTimeout ) {
+		var fullPath = path & ( !queryParams.isEmpty()
+			? ( '?' & parseQueryParams( queryParams, false ) )
+			: '' );
 
-      if ( isJsonPayload( headers ) ) {
+		cfhttp( url = fullPath, method = httpMethod, @@authCredentials@@ result = 'result', timeout = variables.httpTimeout ) {
 
-        var requestPayload = parseBody( payload );
-        if ( isJSON( requestPayload ) )
-          cfhttpparam( type = "body", value = requestPayload );
+		if ( isJsonPayload( headers ) ) {
 
-      } else if ( isFormPayload( headers ) ) {
+			var requestPayload = parseBody( payload );
+			if ( isJSON( requestPayload ) ) {
+				cfhttpparam( type = "body", value = requestPayload );
 
-        headers.delete( 'Content-Type' ); //Content Type added automatically by cfhttppparam
+			} else if ( isFormPayload( headers ) ) {
 
-        for ( var param in payload ) {
-          if ( !variables.fileFields.contains( param ) )
-            cfhttpparam( type = 'formfield', name = param, value = payload[ param ] );
-          else
-            cfhttpparam( type = 'file', name = param, file = payload[ param ] );
-        }
+		  		headers.delete( 'Content-Type' ); //Content Type added automatically by cfhttppparam
 
-      }
+				for ( var param in payload ) {
+					if ( !variables.fileFields.contains( param ) )
+						cfhttpparam( type = 'formfield', name = param, value = payload[ param ] );
+					else
+						cfhttpparam( type = 'file', name = param, file = payload[ param ] );
+				}
 
-      //handled last, to account for possible Content-Type header correction for forms
-      var requestHeaders = parseHeaders( headers );
-      for ( var header in requestHeaders ) {
-        cfhttpparam( type = "header", name = header.name, value = header.value );
-      }
+			}
 
-    }
-    return result;
-  }
+			//handled last, to account for possible Content-Type header correction for forms
+			var requestHeaders = parseHeaders( headers );
+			for ( var header in requestHeaders ) {
+				cfhttpparam( type = "header", name = header.name, value = header.value );
+			}
 
-  /**
-  * @hint convert the headers from a struct to an array
-  */
-  private array function parseHeaders( required struct headers ) {
-    var sortedKeyArray = headers.keyArray();
-    sortedKeyArray.sort( 'textnocase' );
-    var processedHeaders = sortedKeyArray.map(
-      function( key ) {
-        return { name: key, value: trim( headers[ key ] ) };
-      }
-    );
-    return processedHeaders;
-  }
+		}		
+		return result;
+	}
 
-  /**
-  * @hint converts the queryparam struct to a string, with optional encoding and the possibility for empty values being pass through as well
-  */
-  private string function parseQueryParams( required struct queryParams, boolean encodeQueryParams = true, boolean includeEmptyValues = true ) {
-    var sortedKeyArray = queryParams.keyArray();
-    sortedKeyArray.sort( 'text' );
+	/**
+	* @hint convert the headers from a struct to an array
+	*/
+	private array function parseHeaders( required struct headers ) {
+		var sortedKeyArray = headers.keyArray();
+		sortedKeyArray.sort( 'textnocase' );
+		var processedHeaders = sortedKeyArray.map( function( key ) {
+			return { name: key, value: trim( headers[ key ] ) };
+		} );
+		return processedHeaders;
+	}
 
-    var queryString = sortedKeyArray.reduce(
-      function( queryString, queryParamKey ) {
-        var encodedKey = encodeQueryParams
-          ? encodeUrl( queryParamKey )
-          : queryParamKey;
-        if ( !isArray( queryParams[ queryParamKey ] ) ) {
-          var encodedValue = encodeQueryParams && len( queryParams[ queryParamKey ] )
-            ? encodeUrl( queryParams[ queryParamKey ] )
-            : queryParams[ queryParamKey ];
-        } else {
-          var encodedValue = encodeQueryParams && ArrayLen( queryParams[ queryParamKey ] )
-            ?  encodeUrl( serializeJSON( queryParams[ queryParamKey ] ) )
-            : queryParams[ queryParamKey ].toList();
-          }
-        return queryString.listAppend( encodedKey & ( includeEmptyValues || len( encodedValue ) ? ( '=' & encodedValue ) : '' ), '&' );
-      }, ''
-    );
+	/**
+	* @hint converts the queryparam struct to a string, with optional encoding and the possibility for empty values being pass through as well
+	*/
+	private string function parseQueryParams( required struct queryParams, boolean encodeQueryParams = true, boolean includeEmptyValues = true ) {
+		var sortedKeyArray = queryParams.keyArray();
+		sortedKeyArray.sort( 'text' );
 
-    return queryString.len() ? queryString : '';
-  }
+		var queryString = sortedKeyArray.reduce( function( queryString, queryParamKey ) {
+			var encodedKey = encodeQueryParams
+				? encodeUrl( queryParamKey )
+				: queryParamKey;
+			if ( !isArray( queryParams[ queryParamKey ] ) ) {
+				var encodedValue = encodeQueryParams && len( queryParams[ queryParamKey ] )
+					? encodeUrl( queryParams[ queryParamKey ] )
+					: queryParams[ queryParamKey ];
+			} else {
+				var encodedValue = encodeQueryParams && ArrayLen( queryParams[ queryParamKey ] )
+					?  encodeUrl( serializeJSON( queryParams[ queryParamKey ] ) )
+					: queryParams[ queryParamKey ].toList();
+			}
+			return queryString.listAppend( encodedKey & ( includeEmptyValues || len( encodedValue ) ? ( '=' & encodedValue ) : '' ), '&' );
+		}, '' );
 
-  private string function parseBody( required any body ) {
-    if ( isStruct( body ) || isArray( body ) )
-      return serializeJson( body );
-    else if ( isJson( body ) )
-      return body;
-    else
-      return '';
-  }
+		return queryString.len() ? queryString : '';
+	}
 
-  private string function encodeUrl( required string str, boolean encodeSlash = true ) {
-    var result = replacelist( urlEncodedFormat( str, 'utf-8' ), '%2D,%2E,%5F,%7E', '-,.,_,~' );
-    if ( !encodeSlash ) result = replace( result, '%2F', '/', 'all' );
+	private string function parseBody( required any body ) {
+		if ( isStruct( body ) || isArray( body ) )
+			return serializeJson( body );
+		else if ( isJson( body ) )
+			return body;
+		else
+			return '';
+	}
 
-    return result;
-  }
+	private string function encodeUrl( required string str, boolean encodeSlash = true ) {
+		var result = replacelist( urlEncodedFormat( str, 'utf-8' ), '%2D,%2E,%5F,%7E', '-,.,_,~' );
+		if ( !encodeSlash ) result = replace( result, '%2F', '/', 'all' );
 
-  /**
-  * @hint helper to determine if body should be sent as JSON
-  */
-  private boolean function isJsonPayload( required struct headers ) {
-    return headers[ 'Content-Type' ] == 'application/json';
-  }
+		return result;
+	}
 
-  /**
-  * @hint helper to determine if body should be sent as form params
-  */
-  private boolean function isFormPayload( required struct headers ) {
-    return arrayContains( [ 'application/x-www-form-urlencoded', 'multipart/form-data' ], headers[ 'Content-Type' ] );
-  }
+	/**
+	* @hint helper to determine if body should be sent as JSON
+	*/
+	private boolean function isJsonPayload( required struct headers ) {
+		return headers[ 'Content-Type' ] == 'application/json';
+	}
 
-  /**
-  *
-  * Based on an (old) blog post and UDF from Raymond Camden
-  * https://www.raymondcamden.com/2012/01/04/Converting-XML-to-JSON-My-exploration-into-madness/
-  *
-  */
-  private struct function xmlToStruct( required any x ) {
+	/**
+	* @hint helper to determine if body should be sent as form params
+	*/
+	private boolean function isFormPayload( required struct headers ) {
+		return arrayContains( [ 'application/x-www-form-urlencoded', 'multipart/form-data' ], headers[ 'Content-Type' ] );
+	}
 
-    if ( isSimpleValue( x ) && isXml( x ) )
-      x = xmlParse( x );
+	/**
+	*
+	* Based on an (old) blog post and UDF from Raymond Camden
+	* https://www.raymondcamden.com/2012/01/04/Converting-XML-to-JSON-My-exploration-into-madness/
+	*
+	*/
+	private struct function xmlToStruct( required any x ) {
 
-    var s = {};
+		if ( isSimpleValue( x ) && isXml( x ) )
+			x = xmlParse( x );
 
-    if ( xmlGetNodeType( x ) == "DOCUMENT_NODE" ) {
-      s[ structKeyList( x ) ] = xmlToStruct( x[ structKeyList( x ) ] );
-    }
+		var s = {};
 
-    if ( structKeyExists( x, "xmlAttributes" ) && !structIsEmpty( x.xmlAttributes ) ) {
-      s.attributes = {};
-      for ( var item in x.xmlAttributes ) {
-        s.attributes[ item ] = x.xmlAttributes[ item ];
-      }
-    }
+		if ( xmlGetNodeType( x ) == "DOCUMENT_NODE" ) {
+			s[ structKeyList( x ) ] = xmlToStruct( x[ structKeyList( x ) ] );
+		}
 
-    if ( structKeyExists( x, 'xmlText' ) && x.xmlText.trim().len() )
-      s.value = x.xmlText;
+		if ( structKeyExists( x, "xmlAttributes" ) && !structIsEmpty( x.xmlAttributes ) ) {
+			s.attributes = {};
+			for ( var item in x.xmlAttributes ) {
+				s.attributes[ item ] = x.xmlAttributes[ item ];
+			}
+		}
 
-    if ( structKeyExists( x, "xmlChildren" ) ) {
+		if ( structKeyExists( x, 'xmlText' ) && x.xmlText.trim().len() )
+			s.value = x.xmlText;
 
-      for ( var xmlChild in x.xmlChildren ) {
-        if ( structKeyExists( s, xmlChild.xmlname ) ) {
+		if ( structKeyExists( x, "xmlChildren" ) ) {
 
-          if ( !isArray( s[ xmlChild.xmlname ] ) ) {
-            var temp = s[ xmlChild.xmlname ];
-            s[ xmlChild.xmlname ] = [ temp ];
-          }
+			for ( var xmlChild in x.xmlChildren ) {
+				if ( structKeyExists( s, xmlChild.xmlname ) ) {
 
-          arrayAppend( s[ xmlChild.xmlname ], xmlToStruct( xmlChild ) );
+					if ( !isArray( s[ xmlChild.xmlname ] ) ) {
+						var temp = s[ xmlChild.xmlname ];
+						s[ xmlChild.xmlname ] = [ temp ];
+					}
 
-        } else {
+					arrayAppend( s[ xmlChild.xmlname ], xmlToStruct( xmlChild ) );
 
-          if ( structKeyExists( xmlChild, "xmlChildren" ) && arrayLen( xmlChild.xmlChildren ) ) {
-              s[ xmlChild.xmlName ] = xmlToStruct( xmlChild );
-           } else if ( structKeyExists( xmlChild, "xmlAttributes" ) && !structIsEmpty( xmlChild.xmlAttributes ) ) {
-            s[ xmlChild.xmlName ] = xmlToStruct( xmlChild );
-          } else {
-            s[ xmlChild.xmlName ] = xmlChild.xmlText;
-          }
+				} else {
 
-        }
+					if ( structKeyExists( xmlChild, "xmlChildren" ) && arrayLen( xmlChild.xmlChildren ) ) {
+						s[ xmlChild.xmlName ] = xmlToStruct( xmlChild );
+					} else if ( structKeyExists( xmlChild, "xmlAttributes" ) && !structIsEmpty( xmlChild.xmlAttributes ) ) {
+						s[ xmlChild.xmlName ] = xmlToStruct( xmlChild );
+					} else {
+						s[ xmlChild.xmlName ] = xmlChild.xmlText;
+					}
 
-      }
-    }
+				}
 
-    return s;
-  }
+			}
+		}
+
+		return s;
+	}
 
 }

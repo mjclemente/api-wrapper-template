@@ -20,7 +20,9 @@ component displayname="@@name@@"  {
 
         for ( var key in secrets ) {
             //arguments are top priority
-            if ( variables[ key ].len() ) continue;
+            if ( variables[ key ].len() ) {
+                continue;
+            }
 
             //check environment variables
             var envValue = system.getenv( secrets[ key ] );
@@ -163,18 +165,20 @@ component displayname="@@name@@"  {
             if ( isJsonPayload( headers ) ) {
 
                 var requestPayload = parseBody( payload );
-                if ( isJSON( requestPayload ) )
+                if ( isJSON( requestPayload ) ) {
                     cfhttpparam( type = "body", value = requestPayload );
+                }
 
             } else if ( isFormPayload( headers ) ) {
 
                 headers.delete( 'Content-Type' ); //Content Type added automatically by cfhttppparam
 
                 for ( var param in payload ) {
-                    if ( !variables.fileFields.contains( param ) )
+                    if ( !variables.fileFields.contains( param ) ) {
                         cfhttpparam( type = 'formfield', name = param, value = payload[ param ] );
-                    else
+                    } else {
                         cfhttpparam( type = 'file', name = param, file = payload[ param ] );
+                    }
                 }
 
             }
@@ -232,18 +236,20 @@ component displayname="@@name@@"  {
     }
 
     private string function parseBody( required any body ) {
-        if ( isStruct( body ) || isArray( body ) )
+        if ( isStruct( body ) || isArray( body ) ) {
             return serializeJson( body );
-        else if ( isJson( body ) )
+        } else if ( isJson( body ) ) {
             return body;
-        else
+        } else {
             return '';
+        }
     }
 
     private string function encodeUrl( required string str, boolean encodeSlash = true ) {
         var result = replacelist( urlEncodedFormat( str, 'utf-8' ), '%2D,%2E,%5F,%7E', '-,.,_,~' );
-        if ( !encodeSlash ) result = replace( result, '%2F', '/', 'all' );
-
+        if ( !encodeSlash ) {
+            result = replace( result, '%2F', '/', 'all' );
+        }
         return result;
     }
 
@@ -269,8 +275,9 @@ component displayname="@@name@@"  {
     */
     private struct function xmlToStruct( required any x ) {
 
-        if ( isSimpleValue( x ) && isXml( x ) )
+        if ( isSimpleValue( x ) && isXml( x ) ) {
             x = xmlParse( x );
+        }
 
         var s = {};
 
@@ -285,8 +292,9 @@ component displayname="@@name@@"  {
             }
         }
 
-        if ( structKeyExists( x, 'xmlText' ) && x.xmlText.trim().len() )
+        if ( structKeyExists( x, 'xmlText' ) && x.xmlText.trim().len() ) {
             s.value = x.xmlText;
+        }
 
         if ( structKeyExists( x, "xmlChildren" ) ) {
 

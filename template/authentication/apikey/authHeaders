@@ -1,2 +1,2 @@
 
-      'Authorization' : 'Bearer #variables.apiKey#',
+            'Authorization' : 'Bearer #variables.apiKey#',

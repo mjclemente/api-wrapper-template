@@ -312,7 +312,7 @@ component displayname="@@name@@"  {
 
                     if ( structKeyExists( xmlChild, "xmlChildren" ) && arrayLen( xmlChild.xmlChildren ) ) {
                             s[ xmlChild.xmlName ] = xmlToStruct( xmlChild );
-                     } else if ( structKeyExists( xmlChild, "xmlAttributes" ) && !structIsEmpty( xmlChild.xmlAttributes ) ) {
+                    } else if ( structKeyExists( xmlChild, "xmlAttributes" ) && !structIsEmpty( xmlChild.xmlAttributes ) ) {
                         s[ xmlChild.xmlName ] = xmlToStruct( xmlChild );
                     } else {
                         s[ xmlChild.xmlName ] = xmlChild.xmlText;
